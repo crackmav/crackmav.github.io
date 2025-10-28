@@ -1,180 +1,356 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width,initial-scale=1" />
-    <title>Greetings from HTML</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;700&display=swap" rel="stylesheet">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wall of love </title>
+    
     <style>
-        :root{
-            --bg1:#0f172a;
-            --bg2:#0b1224;
-            --card:#0f172a99;
-            --accent:#7c3aed;
-            --glass: rgba(255,255,255,0.06);
-        }
-        html,body{height:100%}
-        body{
-            margin:0;
-            font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
-            background: radial-gradient(1200px 600px at 10% 10%, rgba(124,58,237,0.12), transparent),
-                                    linear-gradient(180deg,var(--bg1),var(--bg2));
-            color:#eef2ff;
-            -webkit-font-smoothing:antialiased;
-            -moz-osx-font-smoothing:grayscale;
-            display:flex;
-            align-items:center;
-            justify-content:center;
-            padding:48px 20px;
-            box-sizing:border-box;
+        /* Import a fun font */
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap');
+
+        /* General Reset and Styling */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
         }
 
-        .card{
-            width:100%;
-            max-width:980px;
-            background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.02));
-            border-radius:16px;
-            box-shadow: 0 10px 30px rgba(2,6,23,0.6), inset 0 1px 0 rgba(255,255,255,0.02);
-            overflow:hidden;
-            display:grid;
-            grid-template-columns: 1fr 420px;
-            gap:0;
-            align-items:stretch;
-            backdrop-filter: blur(6px) saturate(120%);
-            border: 1px solid rgba(255,255,255,0.04);
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #333;
+            overflow-x: hidden;
         }
 
-        /* Responsive: stack on small screens */
-        @media (max-width:880px){
-            .card{ grid-template-columns: 1fr; max-width:720px;}
-            .hero-image{height:320px}
+        header {
+            text-align: center;
+            padding: 40px 20px;
+            color: white;
+            margin-bottom: 30px;
+            animation: fadeInDown 0.8s ease-out;
         }
 
-        .content{
-            padding:48px;
-            display:flex;
-            flex-direction:column;
-            gap:20px;
+        header h1 {
+            font-size: 3em;
+            font-weight: 700;
+            text-shadow: 2px 2px 10px rgba(0,0,0,0.3);
+            margin-bottom: 10px;
         }
 
-        h1{
-            margin:0;
-            font-size: clamp(28px, 4.2vw, 44px);
-            line-height:1.02;
-            letter-spacing:-0.01em;
-            color: #fff;
-            text-shadow: 0 6px 30px rgba(124,58,237,0.18);
+        header p {
+            font-size: 1.2em;
+            font-weight: 300;
+            opacity: 0.9;
         }
 
-        p.lead{
-            margin:0;
-            color: #dbeafe;
-            opacity:0.9;
-            font-size:1.05rem;
+        /* --- Core Grid Layout for Desktop/Tablet --- */
+        .photo-gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 30px;
+            padding: 20px 40px;
+            max-width: 1400px;
+            margin: 0 auto;
+            perspective: 1200px;
         }
 
-        .actions{
-            margin-top:auto;
-            display:flex;
-            gap:12px;
-            flex-wrap:wrap;
+        /* Style for each photo item (Card Base) */
+        .photo-item {
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            display: flex;
+            flex-direction: column;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+            animation: fadeInUp 0.6s ease-out backwards;
+            transform-style: preserve-3d;
         }
 
-        .btn{
-            display:inline-flex;
-            align-items:center;
-            gap:10px;
-            padding:10px 14px;
-            border-radius:10px;
-            background: linear-gradient(90deg,var(--accent),#4f46e5);
-            color:white;
-            text-decoration:none;
-            font-weight:600;
-            box-shadow: 0 8px 18px rgba(79,70,229,0.18);
-            border: none;
-            cursor:pointer;
+        /* Staggered animation delay for each card */
+        .photo-item:nth-child(1) { animation-delay: 0.1s; }
+        .photo-item:nth-child(2) { animation-delay: 0.2s; }
+        .photo-item:nth-child(3) { animation-delay: 0.3s; }
+        .photo-item:nth-child(4) { animation-delay: 0.4s; }
+        .photo-item:nth-child(5) { animation-delay: 0.5s; }
+        .photo-item:nth-child(6) { animation-delay: 0.6s; }
+
+        /* Colorful accent bar on top */
+        .photo-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 5px;
+            background: linear-gradient(90deg, #f093fb 0%, #f5576c 100%);
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.4s ease;
         }
 
-        .muted{
-            background:transparent;
-            border-radius:10px;
-            padding:10px 14px;
-            color:#c7d2fe;
-            border:1px solid rgba(255,255,255,0.04);
-            text-decoration:none;
-            display:inline-flex;
-            align-items:center;
-            gap:8px;
+        .photo-item:hover::before {
+            transform: scaleX(1);
         }
 
-        .hero-image{
-            display:block;
-            width:100%;
-            height:100%;
-            min-height:360px;
-            object-fit:cover;
-            object-position:center;
-            background: linear-gradient(180deg, rgba(0,0,0,0.12), rgba(0,0,0,0.18));
+        /* Image Styling with zoom effect */
+        .photo-item img {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+            filter: brightness(0.95);
         }
 
-        .image-wrap{
-            position:relative;
-            overflow:hidden;
+        .photo-item:hover img {
+            transform: scale(1.1);
+            filter: brightness(1.05);
         }
 
-        .badge{
-            position:absolute;
-            top:18px;
-            left:18px;
-            background: linear-gradient(90deg,#fff2,#fff0);
-            color: #fff;
-            padding:8px 12px;
-            border-radius:999px;
-            font-weight:700;
-            font-size:13px;
-            backdrop-filter: blur(6px);
-            border:1px solid rgba(255,255,255,0.06);
-            text-shadow: 0 2px 14px rgba(0,0,0,0.35);
+        /* Details Section Styling */
+        .details {
+            padding: 20px;
+            background: linear-gradient(to bottom, white, #f8f9fa);
         }
 
-        footer{
-            margin-top:18px;
-            font-size:13px;
-            color:#c7d2fe;
-            opacity:0.7;
+        .name {
+            color: #667eea;
+            font-size: 1.4em;
+            font-weight: 600;
+            margin-bottom: 10px;
+            transition: color 0.3s ease;
         }
 
-        /* subtle float animation for the image */
-        .hero-image.animate{
-            transform-origin:center;
-            animation: float 10s ease-in-out infinite;
-            will-change:transform;
+        .photo-item:hover .name {
+            color: #764ba2;
         }
-        @keyframes float{
-            0%{ transform: translateY(0px) scale(1); }
-            50%{ transform: translateY(-10px) scale(1.02); }
-            100%{ transform: translateY(0px) scale(1); }
+
+        .comment {
+            font-style: italic;
+            color: #666;
+            font-size: 0.95em;
+            line-height: 1.6;
+        }
+
+        /* Enhanced hover effect with 3D transform */
+        .photo-item:hover {
+            transform: translateY(-15px) rotateX(5deg) scale(1.02);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Floating emoji decoration */
+        .photo-item::after {
+            content: '✨';
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            font-size: 1.5em;
+            opacity: 0;
+            transform: scale(0) rotate(-45deg);
+            transition: all 0.3s ease;
+        }
+
+        .photo-item:hover::after {
+            opacity: 1;
+            transform: scale(1) rotate(0deg);
+        }
+
+        /* --- ANIMATIONS --- */
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* --- MOBILE OPTIMIZATION --- */
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 2em;
+            }
+
+            .photo-gallery {
+                padding: 20px;
+                gap: 20px;
+            }
+
+            .photo-item {
+                animation: slideInLeft 0.6s ease-out backwards;
+            }
+
+            @keyframes slideInLeft {
+                from {
+                    opacity: 0;
+                    transform: translateX(-50px);
+                }
+                to {
+                    opacity: 1;
+                    transform: translateX(0);
+                }
+            }
+        }
+
+        @media (max-width: 600px) {
+            .photo-gallery {
+                display: block;
+                padding: 10px;
+            }
+
+            .photo-item {
+                position: sticky;
+                top: 10px;
+                margin: 0 10px 20px 10px;
+                animation: scaleIn 0.5s ease-out backwards;
+            }
+
+            .photo-item:first-child {
+                margin-top: 20px;
+            }
+
+            /* Stack effect on mobile */
+            .photo-item:nth-child(even) {
+                transform: rotate(-1deg);
+            }
+
+            .photo-item:nth-child(odd) {
+                transform: rotate(1deg);
+            }
+
+            .photo-item:hover {
+                transform: translateY(-10px) scale(1.03);
+            }
+
+            @keyframes scaleIn {
+                from {
+                    opacity: 0;
+                    transform: scale(0.8) rotate(5deg);
+                }
+                to {
+                    opacity: 1;
+                    transform: scale(1) rotate(0deg);
+                }
+            }
+        }
+
+        /* Fun scroll indicator */
+        .scroll-indicator {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: white;
+            font-size: 2em;
+            animation: bounce 2s infinite;
+            opacity: 0.7;
+            z-index: 1000;
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% {
+                transform: translateX(-50%) translateY(0);
+            }
+            40% {
+                transform: translateX(-50%) translateY(-15px);
+            }
+            60% {
+                transform: translateX(-50%) translateY(-7px);
+            }
+        }
+
+        /* Hide scroll indicator after scrolling */
+        body.scrolled .scroll-indicator {
+            opacity: 0;
+            pointer-events: none;
         }
     </style>
 </head>
 <body>
-    <main class="card" role="main" aria-labelledby="page-title">
-        <section class="content">
-            <!-- <span class="badge" aria-hidden="true">Hello!</span> -->
-            <h1 id="page-title">Greetings from HQST</h1>
-            <p class="lead">Made by team HQST (2025 edition)! <br> We wish you all the very best in all your endeavors and fathoms beneath your keel.</p>
 
-            <!-- <div class="actions" role="group" aria-label="Actions">
-                <a class="btn" href="#" onclick="alert('Thanks for visiting!'); return false;">Say Hello</a>
-                <a class="muted" href="images/new.jpg" download>Download Photo</a>
-            </div> -->
+    <header>
+        <h1> Wall of Love </h1>
+        <p> Best wishes and fathoms beneath your keel from Team HQST 2025!</p>
+    </header>
 
-            <!-- <footer>Built with HTML & CSS • Responsive • Accessible</footer> -->
-        </section>
-
-        <div class="image-wrap" aria-hidden="false">
-            <img class="hero-image animate" src="images/new.jpg" alt="Decorative photo" />
+    <div class="photo-gallery">
+        <div class="photo-item">
+            <img src="https://picsum.photos/400/300?random=1" alt="A photo of a sunrise">
+            <div class="details">
+                <h3 class="name">Lt Cdr Ashwin Jayaprakash, SO IT</h3>
+                <p class="comment">"The early bird catches the light! Taken during my morning hike."</p>
+            </div>
         </div>
-    </main>
+
+        <div class="photo-item">
+            <img src="https://picsum.photos/400/300?random=2" alt="A photo of a dog playing">
+            <div class="details">
+                <h3 class="name"> Cdr Hemant Yadav, SO AVN</h3>
+                <p class="comment">"My dog, Buddy, having the time of his life in the park."</p>
+            </div>
+        </div>
+
+        <div class="photo-item">
+            <img src="https://picsum.photos/400/300?random=3" alt="A photo of a mountain range">
+            <div class="details">
+                <h3 class="name"> Cdr Shivshankar B Patil, SO ND</h3>
+                <p class="comment">"Breathtaking view from the peak. Worth the climb!"</p>
+            </div>
+        </div>
+        
+        <div class="photo-item">
+            <img src="https://picsum.photos/400/300?random=4" alt="A photo of a cityscape">
+            <div class="details">
+                <h3 class="name"> </h3>Cdr Vijendra Singh, SOL</h3>
+                <p class="comment">"The skyline after a fresh rain. Beautiful reflections."</p>
+            </div>
+        </div>
+
+        <div class="photo-item">
+            <img src="https://picsum.photos/400/300?random=5" alt="A photo of a beach">
+            <div class="details">
+                <h3 class="name"> Cdr Savtanter Saini, SOE</h3>
+                <p class="comment">"Sandy toes and salty kisses. Paradise found!"</p>
+            </div>
+        </div>
+
+        <div class="photo-item">
+            <img src="https://picsum.photos/400/300?random=6" alt="A photo of a book">
+            <div class="details">
+                <h3 class="name"> Cdr Abinash Kumar, SO ASW</h3>
+                <p class="comment">"Finished this amazing book today. Highly recommend it!"</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="scroll-indicator">↓</div>
+
+    <script>
+        // Hide scroll indicator after user scrolls
+        window.addEventListener('scroll', function() {
+            if (window.scrollY > 100) {
+                document.body.classList.add('scrolled');
+            } else {
+                document.body.classList.remove('scrolled');
+            }
+        });
+    </script>
+
 </body>
 </html>
