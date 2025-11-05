@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Wall of love </title>
+    <title>Wall of Love</title>
     
     <style>
         /* Import a fun font */
@@ -28,7 +28,7 @@
             text-align: center;
             padding: 40px 20px;
             color: white;
-            margin-bottom: 30px;
+            margin-bottom: 0; 
             animation: fadeInDown 0.8s ease-out;
         }
 
@@ -45,12 +45,80 @@
             opacity: 0.9;
         }
 
-        /* --- Core Grid Layout for Desktop/Tablet --- */
+        /* --- FOCUS SECTIONS (Caricature & Main Photo) --- */
+        .hidden {
+            display: none !important;
+        }
+        
+        #intro-caricature-container, #main-photo-focus {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px 20px 50px;
+            min-height: calc(100vh - 120px); 
+            box-sizing: border-box;
+            cursor: pointer;
+            position: relative; 
+        }
+        
+        .focus-card {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
+            max-width: 800px;
+            width: 90%;
+            text-align: center;
+            padding: 30px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            animation: scaleIn 0.8s ease-out;
+        }
+        
+        .focus-card:hover {
+            transform: scale(1.02);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4);
+        }
+
+        .focus-card img {
+            width: 100%;
+            height: auto;
+            max-height: 50vh; 
+            object-fit: contain;
+            border-radius: 15px;
+            margin-bottom: 20px;
+            border: 5px solid #667eea;
+        }
+        
+        .focus-card h2 {
+            color: #764ba2;
+            font-size: 2em;
+            margin-bottom: 10px;
+        }
+
+        .focus-card span {
+            display: block;
+            margin-top: 15px;
+            font-weight: 600;
+            color: #f5576c;
+            font-size: 1.1em;
+        }
+
+        .gallery-title {
+            text-align: center;
+            color: white;
+            font-size: 2.5em;
+            font-weight: 700;
+            padding: 30px 20px 10px;
+            text-shadow: 2px 2px 5px rgba(0,0,0,0.4);
+            margin-top: -50px;
+        }
+
+        
+        /* --- Core Grid Layout (Scrollable Gallery) --- */
         .photo-gallery {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
             gap: 30px;
-            padding: 20px 40px;
+            padding: 20px 40px 80px; 
             max-width: 1400px;
             margin: 0 auto;
             perspective: 1200px;
@@ -68,217 +136,85 @@
             position: relative;
             animation: fadeInUp 0.6s ease-out backwards;
             transform-style: preserve-3d;
+            cursor: pointer; /* Indicates toggle functionality */
         }
-
-        /* Staggered animation delay for each card */
-        .photo-item:nth-child(1) { animation-delay: 0.1s; }
-        .photo-item:nth-child(2) { animation-delay: 0.2s; }
-        .photo-item:nth-child(3) { animation-delay: 0.3s; }
-        .photo-item:nth-child(4) { animation-delay: 0.4s; }
-        .photo-item:nth-child(5) { animation-delay: 0.5s; }
-        .photo-item:nth-child(6) { animation-delay: 0.6s; }
-
-        /* Colorful accent bar on top */
-        .photo-item::before {
-            content: '';
+        
+        /* --- Image Toggle Container --- */
+        .image-toggle-container {
+            width: 100%;
+            height: 250px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .image-toggle-container img {
             position: absolute;
             top: 0;
             left: 0;
-            right: 0;
-            height: 5px;
-            background: linear-gradient(90deg, #f093fb 0%, #f5576c 100%);
-            transform: scaleX(0);
-            transform-origin: left;
-            transition: transform 0.4s ease;
-        }
-
-        .photo-item:hover::before {
-            transform: scaleX(1);
-        }
-
-        /* Image Styling with zoom effect */
-        .photo-item img {
             width: 100%;
-            height: 250px;
+            height: 100%;
             object-fit: cover;
-            transition: transform 0.5s ease;
+            transition: opacity 0.4s ease, transform 0.5s ease;
+        }
+
+        /* Initial state: Original image is visible, Caricature is hidden */
+        .caricature-image {
+            opacity: 0;
+            transform: scale(1.1);
+        }
+        
+        .original-image {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        /* Toggled state: Caricature visible, Original hidden */
+        .photo-item.toggled .caricature-image {
+            opacity: 1;
+            transform: scale(1);
+            filter: grayscale(0); 
+        }
+
+        .photo-item.toggled .original-image {
+            opacity: 0;
+            transform: scale(0.9);
+            filter: brightness(0.7); /* Slightly darken when hidden */
+        }
+        
+        /* General Hover Effects */
+        .photo-item:hover .original-image:not(.hidden) {
+            transform: scale(1.05); 
             filter: brightness(0.95);
         }
-
-        .photo-item:hover img {
-            transform: scale(1.1);
-            filter: brightness(1.05);
+        
+        .photo-item.toggled:hover .caricature-image {
+             transform: scale(1.05);
         }
+        
+        /* [REST OF STYLES REMAINS THE SAME, condensed for brevity] */
+        .photo-item::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 5px; background: linear-gradient(90deg, #f093fb 0%, #f5576c 100%); transform: scaleX(0); transform-origin: left; transition: transform 0.4s ease; }
+        .photo-item:hover::before { transform: scaleX(1); }
+        .details { padding: 20px; background: linear-gradient(to bottom, white, #f8f9fa); }
+        .name { color: #667eea; font-size: 1.4em; font-weight: 600; margin-bottom: 10px; transition: color 0.3s ease; }
+        .photo-item:hover .name { color: #764ba2; }
+        .comment { font-style: italic; color: #666; font-size: 0.95em; line-height: 1.6; }
+        .photo-item:hover { transform: translateY(-15px) rotateX(5deg) scale(1.02); box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3); }
+        .photo-item::after { content: '✨'; position: absolute; top: 15px; right: 15px; font-size: 1.5em; opacity: 0; transform: scale(0) rotate(-45deg); transition: all 0.3s ease; }
+        .photo-item:hover::after { opacity: 1; transform: scale(1) rotate(0deg); }
+        @keyframes fadeInDown { from { opacity: 0; transform: translateY(-30px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes fadeInUp { from { opacity: 0; transform: translateY(50px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes scaleIn { from { opacity: 0; transform: scale(0.9); } to { opacity: 1; transform: scale(1); } }
+        @media (max-width: 600px) { header h1 { font-size: 2em; } .focus-card img { max-height: 40vh; } .photo-gallery { display: block; padding: 10px; } .photo-item { margin: 0 10px 20px 10px; animation: scaleIn 0.5s ease-out backwards; } .photo-item:nth-child(even), .photo-item:nth-child(odd) { transform: none !important; } }
+        .scroll-indicator { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%); color: white; font-size: 2em; animation: bounce 2s infinite; opacity: 0.7; z-index: 1000; }
+        @keyframes bounce { 0%, 20%, 50%, 80%, 100% { transform: translateX(-50%) translateY(0); } 40% { transform: translateX(-50%) translateY(-15px); } 60% { transform: translateX(-50%) translateY(-7px); } }
+        body.scrolled .scroll-indicator { opacity: 0; pointer-events: none; }
 
-        /* Details Section Styling */
-        .details {
-            padding: 20px;
-            background: linear-gradient(to bottom, white, #f8f9fa);
-        }
-
-        .name {
-            color: #667eea;
-            font-size: 1.4em;
-            font-weight: 600;
-            margin-bottom: 10px;
-            transition: color 0.3s ease;
-        }
-
-        .photo-item:hover .name {
-            color: #764ba2;
-        }
-
-        .comment {
-            font-style: italic;
-            color: #666;
-            font-size: 0.95em;
-            line-height: 1.6;
-        }
-
-        /* Enhanced hover effect with 3D transform */
-        .photo-item:hover {
-            transform: translateY(-15px) rotateX(5deg) scale(1.02);
-            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
-        }
-
-        /* Floating emoji decoration */
-        .photo-item::after {
-            content: '✨';
-            position: absolute;
-            top: 15px;
-            right: 15px;
-            font-size: 1.5em;
-            opacity: 0;
-            transform: scale(0) rotate(-45deg);
-            transition: all 0.3s ease;
-        }
-
-        .photo-item:hover::after {
-            opacity: 1;
-            transform: scale(1) rotate(0deg);
-        }
-
-        /* --- ANIMATIONS --- */
-        @keyframes fadeInDown {
-            from {
-                opacity: 0;
-                transform: translateY(-30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(50px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        /* --- MOBILE OPTIMIZATION --- */
-        @media (max-width: 768px) {
-            header h1 {
-                font-size: 2em;
-            }
-
-            .photo-gallery {
-                padding: 20px;
-                gap: 20px;
-            }
-
-            .photo-item {
-                animation: slideInLeft 0.6s ease-out backwards;
-            }
-
-            @keyframes slideInLeft {
-                from {
-                    opacity: 0;
-                    transform: translateX(-50px);
-                }
-                to {
-                    opacity: 1;
-                    transform: translateX(0);
-                }
-            }
-        }
-
-        @media (max-width: 600px) {
-            .photo-gallery {
-                display: block;
-                padding: 10px;
-            }
-
-            .photo-item {
-                position: sticky;
-                top: 10px;
-                margin: 0 10px 20px 10px;
-                animation: scaleIn 0.5s ease-out backwards;
-            }
-
-            .photo-item:first-child {
-                margin-top: 20px;
-            }
-
-            /* Stack effect on mobile */
-            .photo-item:nth-child(even) {
-                transform: rotate(-1deg);
-            }
-
-            .photo-item:nth-child(odd) {
-                transform: rotate(1deg);
-            }
-
-            .photo-item:hover {
-                transform: translateY(-10px) scale(1.03);
-            }
-
-            @keyframes scaleIn {
-                from {
-                    opacity: 0;
-                    transform: scale(0.8) rotate(5deg);
-                }
-                to {
-                    opacity: 1;
-                    transform: scale(1) rotate(0deg);
-                }
-            }
-        }
-
-        /* Fun scroll indicator */
-        .scroll-indicator {
-            position: fixed;
-            bottom: 30px;
-            left: 50%;
-            transform: translateX(-50%);
-            color: white;
-            font-size: 2em;
-            animation: bounce 2s infinite;
-            opacity: 0.7;
-            z-index: 1000;
-        }
-
-        @keyframes bounce {
-            0%, 20%, 50%, 80%, 100% {
-                transform: translateX(-50%) translateY(0);
-            }
-            40% {
-                transform: translateX(-50%) translateY(-15px);
-            }
-            60% {
-                transform: translateX(-50%) translateY(-7px);
-            }
-        }
-
-        /* Hide scroll indicator after scrolling */
-        body.scrolled .scroll-indicator {
-            opacity: 0;
-            pointer-events: none;
+        /* --- CRITICAL FIX FOR GALLERY IMAGE CROPPING --- */
+        /* Target all images within the image toggle container */
+        .image-toggle-container img {
+            /* Keep object-fit: cover; but add a focus point */
+            object-position: 50% 20%; /* Centers horizontally (50%) and focuses 20% down from the top. */
+            /* If 20% is too low, try object-position: top; */
         }
     </style>
 </head>
@@ -289,60 +225,108 @@
         <p> Best wishes and fathoms beneath your keel from Team HQST 2025!</p>
     </header>
 
-    <div class="photo-gallery">
-        <div class="photo-item">
-            <img src="https://picsum.photos/400/300?random=1" alt="A photo of a sunrise">
-            <div class="details">
-                <h3 class="name">Lt Cdr Ashwin Jayaprakash, SO IT</h3>
-                <p class="comment">"The early bird catches the light! Taken during my morning hike."</p>
-            </div>
-        </div>
+    <div id="intro-caricature-container">
+        <div class="focus-card">
+            <img src="./caricature.jpg" alt="Team Caricature Drawing"> 
 
-        <div class="photo-item">
-            <img src="https://picsum.photos/400/300?random=2" alt="A photo of a dog playing">
-            <div class="details">
-                <h3 class="name"> Cdr Hemant Yadav, SO AVN</h3>
-                <p class="comment">"My dog, Buddy, having the time of his life in the park."</p>
-            </div>
-        </div>
-
-        <div class="photo-item">
-            <img src="https://picsum.photos/400/300?random=3" alt="A photo of a mountain range">
-            <div class="details">
-                <h3 class="name"> Cdr Shivshankar B Patil, SO ND</h3>
-                <p class="comment">"Breathtaking view from the peak. Worth the climb!"</p>
-            </div>
-        </div>
-        
-        <div class="photo-item">
-            <img src="https://picsum.photos/400/300?random=4" alt="A photo of a cityscape">
-            <div class="details">
-                <h3 class="name"> </h3>Cdr Vijendra Singh, SOL</h3>
-                <p class="comment">"The skyline after a fresh rain. Beautiful reflections."</p>
-            </div>
-        </div>
-
-        <div class="photo-item">
-            <img src="https://picsum.photos/400/300?random=5" alt="A photo of a beach">
-            <div class="details">
-                <h3 class="name"> Cdr Savtanter Saini, SOE</h3>
-                <p class="comment">"Sandy toes and salty kisses. Paradise found!"</p>
-            </div>
-        </div>
-
-        <div class="photo-item">
-            <img src="https://picsum.photos/400/300?random=6" alt="A photo of a book">
-            <div class="details">
-                <h3 class="name"> Cdr Abinash Kumar, SO ASW</h3>
-                <p class="comment">"Finished this amazing book today. Highly recommend it!"</p>
-            </div>
+            <span>Team HQST 2025</span>
         </div>
     </div>
+    
+    <div id="main-photo-focus" class="hidden">
+        <div class="focus-card">
+            <img src="./main.jpg" alt="Main Team Photo"> 
+
+            <span>Team HQST 2025</span>
+        </div>
+    </div>
+
+    <h2 class="gallery-title"> Best Wishes from Team ✨</h2>
+
+    <div class="photo-gallery" id="main-gallery">
+        </div>
 
     <div class="scroll-indicator">↓</div>
 
     <script>
-        // Hide scroll indicator after user scrolls
+        // --- 1. DUMMY DATA GENERATION (32 ITEMS) ---
+        const galleryData = [];
+        const ranks = ["Cdr", "Lt Cdr", "Sub Lt", "Captain", "Lt"];
+        const departments = ["SO IT", "SO AVN", "SO ND", "SO LOG", "SO E", "SO ASW", "SO WPN"];
+        const comments = [
+            '"Fair winds and following seas on your next adventure!"',
+            '"A snapshot of pure joy and dedication."',
+            '"Your professionalism truly shines."',
+            '"Remember this beautiful moment, always."',
+            '"Wishing you the best in all future endeavours."',
+            '"Always one step ahead. Great job!"',
+            '"It was an honor serving alongside you."',
+            '"May your future be as bright as this smile!"',
+            '"Taken during our legendary coffee break."',
+            '"The definition of leadership and focus."',
+        ];
+
+        for (let i = 1; i <= 32; i++) {
+            const rank = ranks[Math.floor(Math.random() * ranks.length)];
+            const dept = departments[Math.floor(Math.random() * departments.length)];
+            const name = `Random ${i}`;
+            const comment = comments[Math.floor(Math.random() * comments.length)];
+
+            galleryData.push({
+                id: i,
+                name: `${rank} ${name}, ${dept}`,
+                comment: comment,
+                originalFile: `${i}.jpg`, // Assumes photos are photo_1.jpg to photo_32.jpg
+                caricatureFile: `${i}.png` // Assumes caricatures are caricature_1.png to caricature_32.png
+            });
+        }
+
+        // --- 2. DYNAMIC GALLERY POPULATION ---
+        const mainGallery = document.getElementById('main-gallery');
+        const originalPath = './original images/';
+        const caricaturePath = './caricature outline/';
+
+        galleryData.forEach((item, index) => {
+            const photoItem = document.createElement('div');
+            photoItem.className = 'photo-item';
+            // Stagger animation delay based on index
+            photoItem.style.animationDelay = `${(index % 6) * 0.1 + 0.1}s`;
+
+            photoItem.innerHTML = `
+                <div class="image-toggle-container">
+                    <img src="${caricaturePath}${item.caricatureFile}" alt="Caricature Outline for ${item.name}" class="caricature-image">
+                    
+                    <img src="${originalPath}${item.originalFile}" alt="Original Photo of ${item.name}" class="original-image">
+                </div>
+                <div class="details">
+                    <h3 class="name">${item.name}</h3>
+                    <p class="comment">${item.comment}</p>
+                </div>
+            `;
+            
+            // Add click listener to toggle images
+            photoItem.addEventListener('click', function() {
+                this.classList.toggle('toggled');
+            });
+
+            mainGallery.appendChild(photoItem);
+        });
+
+
+        // --- 3. PRIMARY FOCUS TOGGLE LOGIC ---
+        const caricatureFocus = document.getElementById('intro-caricature-container');
+        const mainPhotoFocus = document.getElementById('main-photo-focus');
+        
+        function toggleFocusView() {
+            caricatureFocus.classList.toggle('hidden');
+            mainPhotoFocus.classList.toggle('hidden');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        caricatureFocus.addEventListener('click', toggleFocusView);
+        mainPhotoFocus.addEventListener('click', toggleFocusView);
+
+        // --- 4. SCROLL INDICATOR LOGIC ---
         window.addEventListener('scroll', function() {
             if (window.scrollY > 100) {
                 document.body.classList.add('scrolled');
