@@ -216,6 +216,108 @@
             object-position: 50% 5%; /* Centers horizontally (50%) and focuses 20% down from the top. */
             /* If 20% is too low, try object-position: top; */
         }
+
+        /* --- MODAL/LIGHTBOX STYLES --- */
+
+/* The Modal Overlay */
+.modal {
+    position: fixed;
+    z-index: 10000; /* Ensure it's above everything else */
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.9); /* Black semi-transparent background */
+    display: none; /* Hidden by default */
+    justify-content: center;
+    align-items: center;
+    backdrop-filter: blur(5px);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.modal.visible {
+    display: flex;
+    opacity: 1;
+}
+
+/* Modal Content Container */
+.modal-content {
+    margin: auto;
+    display: block;
+    max-width: 90%;
+    max-height: 90%;
+    background: white;
+    border-radius: 15px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+    padding: 20px;
+    text-align: center;
+    transform: scale(0.8);
+    transition: transform 0.3s ease;
+}
+
+.modal.visible .modal-content {
+    transform: scale(1);
+}
+
+/* Image inside the Modal */
+#modal-image-container {
+    width: 100%;
+    max-height: 70vh;
+    overflow: hidden;
+    margin-bottom: 15px;
+    position: relative;
+    border-radius: 10px;
+}
+
+#modal-image-container img {
+    max-width: 100%;
+    max-height: 70vh;
+    height: auto;
+    object-fit: contain; /* CRITICAL: Use contain to view the entire picture */
+    cursor: pointer; /* Indicates the image itself can be toggled */
+    transition: opacity 0.3s ease;
+    border: 3px solid #667eea;
+    border-radius: 10px;
+}
+
+/* Details inside the Modal */
+.modal-details h3 {
+    color: #764ba2;
+    font-size: 1.8em;
+    margin-bottom: 5px;
+}
+
+.modal-details p {
+    color: #666;
+    font-style: italic;
+    font-size: 1.1em;
+    margin-bottom: 15px;
+}
+
+/* The Close Button */
+.close-button {
+    position: absolute;
+    top: 15px;
+    right: 35px;
+    color: #f1f1f1;
+    font-size: 40px;
+    font-weight: bold;
+    transition: 0.3s;
+    cursor: pointer;
+    text-shadow: 0 0 5px rgba(0,0,0,0.5);
+}
+
+.close-button:hover,
+.close-button:focus {
+    color: #bbb;
+}
+
+/* Hide the body scroll bar when modal is open */
+.modal-open {
+    overflow: hidden;
+}
     </style>
 </head>
 <body>
@@ -245,6 +347,19 @@
 
     <div class="photo-gallery" id="main-gallery">
         </div>
+
+    <div id="image-modal" class="modal">
+        <span class="close-button">&times;</span>
+        <div class="modal-content">
+            <div id="modal-image-container">
+                </div>
+            <div class="modal-details">
+                <h3 id="modal-name"></h3>
+                <p id="modal-comment"></p>
+                <p style="font-size: 0.9em; color: #aaa;">Click the photo to switch between original and caricature!</p>
+            </div>
+        </div>
+    </div>
 
     <div class="scroll-indicator">↓</div>
 
@@ -281,59 +396,122 @@
             });
         }
 
-        // --- 2. DYNAMIC GALLERY POPULATION ---
-        const mainGallery = document.getElementById('main-gallery');
-        const originalPath = './original images/';
-        const caricaturePath = './caricature outline/';
+        // --- 2. MODAL & FOCUS VARIABLES ---
+    const modal = document.getElementById("image-modal");
+    const modalImageContainer = document.getElementById("modal-image-container");
+    const modalName = document.getElementById("modal-name");
+    const modalComment = document.getElementById("modal-comment");
+    const closeBtn = document.querySelector(".close-button");
+    let currentModalItem = null; // Stores the data object of the currently displayed item
 
-        galleryData.forEach((item, index) => {
-            const photoItem = document.createElement('div');
-            photoItem.className = 'photo-item';
-            // Stagger animation delay based on index
-            photoItem.style.animationDelay = `${(index % 6) * 0.1 + 0.1}s`;
+    // --- 3. MODAL CONTROL FUNCTIONS ---
 
-            photoItem.innerHTML = `
-                <div class="image-toggle-container">
-                    <img src="${caricaturePath}${item.caricatureFile}" alt="Caricature Outline for ${item.name}" class="caricature-image">
-                    
-                    <img src="${originalPath}${item.originalFile}" alt="Original Photo of ${item.name}" class="original-image">
-                </div>
-                <div class="details">
-                    <h3 class="name">${item.name}</h3>
-                    <p class="comment">${item.comment}</p>
-                </div>
-            `;
-            
-            // Add click listener to toggle images
-            photoItem.addEventListener('click', function() {
-                this.classList.toggle('toggled');
-            });
-
-            mainGallery.appendChild(photoItem);
-        });
-
-
-        // --- 3. PRIMARY FOCUS TOGGLE LOGIC ---
-        const caricatureFocus = document.getElementById('intro-caricature-container');
-        const mainPhotoFocus = document.getElementById('main-photo-focus');
+    function openModal(item) {
+        currentModalItem = item;
         
-        function toggleFocusView() {
-            caricatureFocus.classList.toggle('hidden');
-            mainPhotoFocus.classList.toggle('hidden');
-            window.scrollTo({ top: 0, behavior: 'smooth' });
+        // 1. Populate details
+        modalName.textContent = item.name;
+        modalComment.textContent = item.comment;
+        
+        // 2. Set the initial image (Original)
+        modalImageContainer.innerHTML = `
+            <img id="modal-image" src="${originalPath}${item.originalFile}" data-original="${originalPath}${item.originalFile}" data-caricature="${caricaturePath}${item.caricatureFile}" alt="${item.name}">
+        `;
+
+        // 3. Add toggle listener to the image itself
+        document.getElementById('modal-image').addEventListener('click', toggleModalImage);
+        
+        // 4. Show modal
+        modal.classList.add('visible');
+        document.body.classList.add('modal-open');
+    }
+
+    function closeModal() {
+        modal.classList.remove('visible');
+        document.body.classList.remove('modal-open');
+        currentModalItem = null;
+    }
+
+    function toggleModalImage() {
+        const imgElement = document.getElementById('modal-image');
+        const currentSrc = imgElement.getAttribute('src');
+        const originalSrc = imgElement.getAttribute('data-original');
+        const caricatureSrc = imgElement.getAttribute('data-caricature');
+
+        if (currentSrc === originalSrc) {
+            imgElement.setAttribute('src', caricatureSrc);
+        } else {
+            imgElement.setAttribute('src', originalSrc);
         }
+    }
 
-        caricatureFocus.addEventListener('click', toggleFocusView);
-        mainPhotoFocus.addEventListener('click', toggleFocusView);
+    // Close modal via button or outside click
+    closeBtn.onclick = closeModal;
+    window.onclick = function(event) {
+        if (event.target === modal) {
+            closeModal();
+        }
+    }
+    // Close modal via ESC key
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && modal.classList.contains('visible')) {
+            closeModal();
+        }
+    });
 
-        // --- 4. SCROLL INDICATOR LOGIC ---
-        window.addEventListener('scroll', function() {
-            if (window.scrollY > 100) {
-                document.body.classList.add('scrolled');
-            } else {
-                document.body.classList.remove('scrolled');
-            }
+
+    // --- 4. DYNAMIC GALLERY POPULATION ---
+    const mainGallery = document.getElementById('main-gallery');
+    // Using simple paths based on previous solution. Ensure these are correct.
+    const originalPath = 'original images/'; 
+    const caricaturePath = 'caricature outline/'; 
+
+    galleryData.forEach((item, index) => {
+        const photoItem = document.createElement('div');
+        photoItem.className = 'photo-item';
+        photoItem.style.animationDelay = `${(index % 6) * 0.1 + 0.1}s`;
+
+        // We only show the original image in the small tile now for simplicity
+        photoItem.innerHTML = `
+            <div class="image-toggle-container">
+                <img src="${originalPath}${item.originalFile}" alt="Photo of ${item.name}" class="original-image">
+            </div>
+            <div class="details">
+                <h3 class="name">${item.name}</h3>
+                <p class="comment">${item.comment}</p>
+            </div>
+        `;
+        
+        // 🛑 NEW: Clicking opens the modal, passing the item data
+        photoItem.addEventListener('click', function() {
+            openModal(item);
         });
+
+        mainGallery.appendChild(photoItem);
+    });
+
+
+    // --- 5. PRIMARY FOCUS TOGGLE LOGIC (Unchanged) ---
+    const caricatureFocus = document.getElementById('intro-caricature-container');
+    const mainPhotoFocus = document.getElementById('main-photo-focus');
+    
+    function toggleFocusView() {
+        caricatureFocus.classList.toggle('hidden');
+        mainPhotoFocus.classList.toggle('hidden');
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    caricatureFocus.addEventListener('click', toggleFocusView);
+    mainPhotoFocus.addEventListener('click', toggleFocusView);
+
+    // --- 6. SCROLL INDICATOR LOGIC (Unchanged) ---
+    window.addEventListener('scroll', function() {
+        if (window.scrollY > 100) {
+            document.body.classList.add('scrolled');
+        } else {
+            document.body.classList.remove('scrolled');
+        }
+    });
     </script>
 
 </body>
