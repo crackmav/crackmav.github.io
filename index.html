@@ -5,320 +5,366 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Wall of Love</title>
     
-    <style>
-        /* Import a fun font */
-        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap');
+<style>
+    /* Import a fun font */
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap');
 
-        /* General Reset and Styling */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+    /* General Reset and Styling */
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
 
-        body {
-            font-family: 'Poppins', sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
-            color: #333;
-            overflow-x: hidden;
-        }
+    body {
+        font-family: 'Poppins', sans-serif;
+        /* 🚨 FIX: Change body background to a very light neutral color (the "page" color) */
+        background: #f7f7f7; 
+        min-height: 100vh;
+        color: #333;
+        overflow-x: hidden;
+    }
 
-        header {
-            text-align: center;
-            padding: 40px 20px;
-            color: white;
-            margin-bottom: 0; 
-            animation: fadeInDown 0.8s ease-out;
-        }
+    header {
+        text-align: center;
+        padding: 40px 20px;
+        color: white;
+        margin-bottom: 0; 
+        /* Keep the gradient only on the header section */
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); 
+        animation: fadeInDown 0.8s ease-out;
+    }
 
-        header h1 {
-            font-size: 3em;
-            font-weight: 700;
-            text-shadow: 2px 2px 10px rgba(0,0,0,0.3);
-            margin-bottom: 10px;
-        }
+    header h1 {
+        font-size: 3em;
+        font-weight: 700;
+        text-shadow: 2px 2px 10px rgba(0,0,0,0.3);
+        margin-bottom: 10px;
+    }
 
-        header p {
-            font-size: 1.2em;
-            font-weight: 300;
-            opacity: 0.9;
-        }
+    header p {
+        font-size: 1.2em;
+        font-weight: 300;
+        opacity: 0.9;
+    }
 
-        /* --- FOCUS SECTIONS (Caricature & Main Photo) --- */
-        .hidden {
-            display: none !important;
-        }
+    /* --- FOCUS SECTIONS --- */
+    .hidden {
+        display: none !important;
+    }
+
+    #intro-caricature-container, #main-photo-focus {
+        min-height: 80vh; 
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 20px;
+        box-sizing: border-box;
+        cursor: pointer;
+        position: relative; 
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); /* Retain header gradient for focus area */
+    }
+
+    .focus-card {
+        background: white;
+        border-radius: 20px;
+        box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
+        max-width: 800px;
+        width: 90%;
+        text-align: center;
+        padding: 30px;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        animation: scaleIn 0.8s ease-out;
+    }
+
+    .focus-card:hover {
+        transform: scale(1.02);
+        box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4);
+    }
+
+    .focus-card img {
+        width: 100%;
+        height: auto;
+        max-height: 50vh; 
+        object-fit: contain;
+        border-radius: 15px;
+        margin-bottom: 20px;
+        border: 5px solid #667eea;
+    }
+
+    .focus-card h2 {
+        color: #764ba2;
+        font-size: 2em;
+        margin-bottom: 10px;
+    }
+
+    .focus-card span {
+        display: block;
+        margin-top: 15px;
+        font-weight: 600;
+        color: #f5576c;
+        font-size: 1.1em;
+    }
+
+    .gallery-title {
+        text-align: center;
+        /* Title color should work well against the new background */
+        color: #333; 
+        font-size: 2.5em;
+        font-weight: 700;
+        padding: 30px 20px 10px;
+        text-shadow: none; /* Remove text shadow as background is light */
+        /* 🚨 FIX: Adjust margin-top to separate it from the header section */
+        margin-top: 0; 
+    }
+
+
+    /* --- Core Grid Layout (Scrollable Gallery) --- */
+    .photo-gallery {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+        gap: 30px;
+        padding: 20px 40px 80px; 
+        max-width: 1400px;
+        margin: 0 auto;
+        perspective: 1200px;
+    }
+
+    /* Style for each photo item (Card Base) */
+    .photo-item {
+        /* The card body color is what the JS sets (e.g., #fef3f4). 
+           Since the body background is now #f7f7f7, the pastel color will stand out beautifully. */
+        background: var(--card-bg-color, #ffffff); 
+        border-radius: 15px; 
+        overflow: hidden;
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15); 
+        display: flex;
+        flex-direction: column;
+        transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        position: relative;
+        transform-style: preserve-3d;
+        cursor: pointer;
+
+        /* Shake-in Start State */
+        opacity: 0;
+        transform: translateY(50px) rotate(5deg);
+        transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+    }
+
+    /* Shake-in Animation Triggered by JS */
+    .photo-item.shake-in {
+        opacity: 1;
+        transform: translateY(0) rotate(0deg);
+        animation: shake-in-animate 1.2s ease-out; 
+    }
+
+    /* The Shaking Keyframes */
+    @keyframes shake-in-animate {
+        0% { transform: scale(0.95) rotate(-2deg); }
+        20% { transform: scale(1.05) rotate(3deg); }
+        40% { transform: scale(0.98) rotate(-1deg); }
+        60% { transform: scale(1.02) rotate(2deg); }
+        80% { transform: scale(0.99) rotate(-0.5deg); }
+        100% { transform: scale(1) rotate(0deg); } 
+    }
+
+    /* ✉️ Envelope Flap (V-Shape) */
+    .photo-item::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 60px; /* Height of the V-shape */
+        background: var(--flap-color-light, #f8c9d4); 
+        clip-path: polygon(0 0, 100% 0, 50% 100%, 0 0);
+        z-index: 1; 
+        border-top-left-radius: 15px; 
+        border-top-right-radius: 15px;
+        transform-origin: top; 
+        transition: transform 0.4s ease;
+        transform: scaleY(1); 
+    }
+
+    .photo-item:hover::before {
+        transform: scaleY(0.9) translateY(-5px); 
+    }
+
+
+    /* --- Image Toggle Container (The "Letter" part peeking out) --- */
+    .image-toggle-container {
+        width: 100%;
+        height: 120px; 
+        position: relative;
+        overflow: hidden;
+        margin-top: 30px; /* Half the flap's height */
+        border-radius: 0; 
+        z-index: 0; 
+    }
+
+    .image-toggle-container img {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        object-position: 50% 5%; 
+        transition: opacity 0.4s ease, transform 0.5s ease;
+    }
+
+    /* Image Toggle States (Original/Caricature) */
+    .caricature-image { opacity: 0; transform: scale(1); }
+    .original-image { opacity: 1; transform: scale(1); }
+    .photo-item.toggled .caricature-image { opacity: 1; transform: scale(1); filter: grayscale(0); }
+    .photo-item.toggled .original-image { opacity: 0; transform: scale(0.9); filter: brightness(0.7); }
+
+    /* General Hover Effects */
+    .photo-item:hover .original-image:not(.hidden) { transform: scale(1.05); filter: brightness(0.95); }
+    .photo-item.toggled:hover .caricature-image { transform: scale(1.05); }
+
+    /* ✉️ Details section (The Envelope Body) */
+    .details {
+        /* This background is the same as the card body, which is set by JS */
+        padding: 30px 20px; 
+        background: linear-gradient(to bottom, var(--card-bg-color, #ffffff), var(--card-bg-color-darker, #f8f9fa)); 
+        flex-grow: 1;
+        border-bottom-left-radius: 15px; 
+        border-bottom-right-radius: 15px; 
+    }
+
+    .name { color: #667eea; font-size: 1.4em; font-weight: 600; margin-bottom: 10px; transition: color 0.3s ease; }
+    .photo-item:hover .name { color: #764ba2; }
+    .comment { font-style: italic; color: #666; font-size: 0.95em; line-height: 1.6; }
+    .photo-item:hover { transform: translateY(-15px) rotateX(5deg) scale(1.02); box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3); }
+
+    /* ✨ Icon adjustment */
+    .photo-item::after { 
+        content: '✨'; 
+        position: absolute; 
+        top: 25px; 
+        right: 15px; 
+        font-size: 1.5em; 
+        opacity: 0; 
+        transform: scale(0) rotate(-45deg); 
+        transition: all 0.3s ease; 
+        z-index: 2; 
+    }
+    .photo-item:hover::after { opacity: 1; transform: scale(1) rotate(0deg); }
+
+    /* --- General Animations and Media Queries --- */
+    @keyframes fadeInDown { from { opacity: 0; transform: translateY(-30px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes scaleIn { from { opacity: 0; transform: scale(0.9); } to { opacity: 1; transform: scale(1); } }
+    
+    /* 📱 MOBILE OPTIMIZATION (Max-width 600px) */
+    @media (max-width: 600px) { 
+        header h1 { font-size: 2em; } 
         
-        #intro-caricature-container, #main-photo-focus {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 20px 20px 50px;
-            min-height: calc(100vh - 120px); 
-            box-sizing: border-box;
-            cursor: pointer;
-            position: relative; 
-        }
-        
+        /* FOCUS CARD FULL SCREEN ON MOBILE */
         .focus-card {
-            background: white;
-            border-radius: 20px;
-            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
-            max-width: 800px;
-            width: 90%;
-            text-align: center;
-            padding: 30px;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            animation: scaleIn 0.8s ease-out;
+            width: 100%; 
+            margin: 0 10px; 
+            padding: 15px;
         }
-        
-        .focus-card:hover {
-            transform: scale(1.02);
-            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4);
-        }
-
         .focus-card img {
-            width: 100%;
-            height: auto;
-            max-height: 50vh; 
-            object-fit: contain;
-            border-radius: 15px;
-            margin-bottom: 20px;
-            border: 5px solid #667eea;
+            max-height: 65vh; 
         }
-        
-        .focus-card h2 {
-            color: #764ba2;
-            font-size: 2em;
-            margin-bottom: 10px;
+        #intro-caricature-container, #main-photo-focus {
+            padding: 10px 0; 
+            min-height: 75vh;
         }
-
-        .focus-card span {
-            display: block;
-            margin-top: 15px;
-            font-weight: 600;
-            color: #f5576c;
-            font-size: 1.1em;
-        }
-
         .gallery-title {
-            text-align: center;
-            color: white;
-            font-size: 2.5em;
-            font-weight: 700;
-            padding: 30px 20px 10px;
-            text-shadow: 2px 2px 5px rgba(0,0,0,0.4);
-            margin-top: -50px;
+             padding-top: 20px; 
         }
 
-        
-        /* --- Core Grid Layout (Scrollable Gallery) --- */
-        .photo-gallery {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-            gap: 30px;
-            padding: 20px 40px 80px; 
-            max-width: 1400px;
-            margin: 0 auto;
-            perspective: 1200px;
-        }
-
-        /* Style for each photo item (Card Base) */
-        .photo-item {
-            background: white;
-            border-radius: 20px;
-            overflow: hidden;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-            display: flex;
-            flex-direction: column;
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            position: relative;
-            animation: fadeInUp 0.6s ease-out backwards;
-            transform-style: preserve-3d;
-            cursor: pointer; /* Indicates toggle functionality */
+        /* 1. Gallery Layout */
+        .photo-gallery { 
+            display: block; 
+            padding: 10px; 
+        } 
+        .photo-item { 
+            margin: 0 10px 20px 10px; 
+            transform: none !important; 
+            animation: scaleIn 0.5s ease-out backwards;
+            transition: all 0.3s ease;
+        } 
+        .photo-item:hover { 
+            transform: none !important; 
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15); 
         }
         
-        /* --- Image Toggle Container --- */
-        .image-toggle-container {
-            width: 100%;
-            height: 250px;
-            position: relative;
-            overflow: hidden;
+        /* 2. Envelope Flap Size */
+        .photo-item::before { 
+            height: 40px; 
+        } 
+        .image-toggle-container { 
+            height: 80px; 
+            margin-top: 20px; 
         }
         
-        .image-toggle-container img {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            transition: opacity 0.4s ease, transform 0.5s ease;
+        /* 3. Text & Icon Size */
+        .name { font-size: 1.2em; }
+        .comment { font-size: 0.85em; }
+        .details { padding: 20px 15px; }
+        .photo-item::after { 
+            top: 15px; 
+            right: 10px; 
+            font-size: 1.2em; 
+        }
+        .photo-item:hover::after, .photo-item:hover::before { 
+             transform: none !important;
         }
 
-        /* Initial state: Original image is visible, Caricature is hidden */
-        .caricature-image {
-            opacity: 0;
-            transform: scale(1);
+        /* 4. Modal Optimization */
+        .modal-content {
+            max-width: 95%; 
+            max-height: 95vh;
+            padding: 15px;
         }
-        
-        .original-image {
-            opacity: 1;
-            transform: scale(1);
+        #modal-image-container img {
+            max-height: 60vh; 
         }
-
-        /* Toggled state: Caricature visible, Original hidden */
-        .photo-item.toggled .caricature-image {
-            opacity: 1;
-            transform: scale(1);
-            filter: grayscale(0); 
+        .close-button {
+            top: 10px; 
+            right: 15px; 
+            font-size: 30px; 
         }
+    }
+    
+    .scroll-indicator { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%); color: white; font-size: 2em; animation: bounce 2s infinite; opacity: 0.7; z-index: 1000; }
+    @keyframes bounce { 0%, 20%, 50%, 80%, 100% { transform: translateX(-50%) translateY(0); } 40% { transform: translateX(-50%) translateY(-15px); } 60% { transform: translateX(-50%) translateY(-7px); } }
+    /* Indicator is white on the blue gradient, but must be darker on the white gallery section */
+    body.scrolled .scroll-indicator { color: #667eea; opacity: 0; pointer-events: none; } 
+    /* Remove the color change logic and keep original white if you scroll indicator visibility is handled via JS based on scroll position */
+    
+    /* --- MODAL/LIGHTBOX STYLES --- */
+    .modal {
+        position: fixed;
+        z-index: 10000;
+        left: 0; top: 0; width: 100%; height: 100%; overflow: auto;
+        background-color: rgba(0, 0, 0, 0.9);
+        display: none; justify-content: center; align-items: center;
+        backdrop-filter: blur(5px); opacity: 0; transition: opacity 0.3s ease;
+    }
+    .modal.visible { display: flex; opacity: 1; }
+    .modal-content {
+        margin: auto; display: block; max-width: 90%; max-height: 90%;
+        background: white; border-radius: 15px; box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+        padding: 20px; text-align: center; transform: scale(0.8); transition: transform 0.3s ease;
+    }
+    .modal.visible .modal-content { transform: scale(1); }
+    #modal-image-container { width: 100%; max-height: 70vh; overflow: hidden; margin-bottom: 15px; position: relative; border-radius: 10px; }
+    #modal-image-container img { max-width: 100%; max-height: 70vh; height: auto; object-fit: contain; cursor: pointer; transition: opacity 0.3s ease; border: 3px solid #667eea; border-radius: 10px; }
+    .modal-details h3 { color: #764ba2; font-size: 1.8em; margin-bottom: 5px; }
+    .modal-details p { color: #666; font-style: italic; font-size: 1.1em; margin-bottom: 15px; }
+    .close-button {
+        position: absolute; top: 15px; right: 35px; color: #f1f1f1; font-size: 40px;
+        font-weight: bold; transition: 0.3s; cursor: pointer; text-shadow: 0 0 5px rgba(0,0,0,0.5);
+    }
+    .close-button:hover, .close-button:focus { color: #bbb; }
+    .modal-open { overflow: hidden; }
+</style>
 
-        .photo-item.toggled .original-image {
-            opacity: 0;
-            transform: scale(0.9);
-            filter: brightness(0.7); /* Slightly darken when hidden */
-        }
-        
-        /* General Hover Effects */
-        .photo-item:hover .original-image:not(.hidden) {
-            transform: scale(1.05); 
-            filter: brightness(0.95);
-        }
-        
-        .photo-item.toggled:hover .caricature-image {
-             transform: scale(1.05);
-        }
-        
-        /* [REST OF STYLES REMAINS THE SAME, condensed for brevity] */
-        .photo-item::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 5px; background: linear-gradient(90deg, #f093fb 0%, #f5576c 100%); transform: scaleX(0); transform-origin: left; transition: transform 0.4s ease; }
-        .photo-item:hover::before { transform: scaleX(1); }
-        .details { padding: 20px; background: linear-gradient(to bottom, white, #f8f9fa); }
-        .name { color: #667eea; font-size: 1.4em; font-weight: 600; margin-bottom: 10px; transition: color 0.3s ease; }
-        .photo-item:hover .name { color: #764ba2; }
-        .comment { font-style: italic; color: #666; font-size: 0.95em; line-height: 1.6; }
-        .photo-item:hover { transform: translateY(-15px) rotateX(5deg) scale(1.02); box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3); }
-        .photo-item::after { content: '✨'; position: absolute; top: 15px; right: 15px; font-size: 1.5em; opacity: 0; transform: scale(0) rotate(-45deg); transition: all 0.3s ease; }
-        .photo-item:hover::after { opacity: 1; transform: scale(1) rotate(0deg); }
-        @keyframes fadeInDown { from { opacity: 0; transform: translateY(-30px); } to { opacity: 1; transform: translateY(0); } }
-        @keyframes fadeInUp { from { opacity: 0; transform: translateY(50px); } to { opacity: 1; transform: translateY(0); } }
-        @keyframes scaleIn { from { opacity: 0; transform: scale(0.9); } to { opacity: 1; transform: scale(1); } }
-        @media (max-width: 600px) { header h1 { font-size: 2em; } .focus-card img { max-height: 40vh; } .photo-gallery { display: block; padding: 10px; } .photo-item { margin: 0 10px 20px 10px; animation: scaleIn 0.5s ease-out backwards; } .photo-item:nth-child(even), .photo-item:nth-child(odd) { transform: none !important; } }
-        .scroll-indicator { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%); color: white; font-size: 2em; animation: bounce 2s infinite; opacity: 0.7; z-index: 1000; }
-        @keyframes bounce { 0%, 20%, 50%, 80%, 100% { transform: translateX(-50%) translateY(0); } 40% { transform: translateX(-50%) translateY(-15px); } 60% { transform: translateX(-50%) translateY(-7px); } }
-        body.scrolled .scroll-indicator { opacity: 0; pointer-events: none; }
-
-        /* --- CRITICAL FIX FOR GALLERY IMAGE CROPPING --- */
-        /* Target all images within the image toggle container */
-        .image-toggle-container img {
-            /* Keep object-fit: cover; but add a focus point */
-            object-position: 50% 5%; /* Centers horizontally (50%) and focuses 20% down from the top. */
-            /* If 20% is too low, try object-position: top; */
-        }
-
-        /* --- MODAL/LIGHTBOX STYLES --- */
-
-/* The Modal Overlay */
-.modal {
-    position: fixed;
-    z-index: 10000; /* Ensure it's above everything else */
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    overflow: auto;
-    background-color: rgba(0, 0, 0, 0.9); /* Black semi-transparent background */
-    display: none; /* Hidden by default */
-    justify-content: center;
-    align-items: center;
-    backdrop-filter: blur(5px);
-    opacity: 0;
-    transition: opacity 0.3s ease;
-}
-
-.modal.visible {
-    display: flex;
-    opacity: 1;
-}
-
-/* Modal Content Container */
-.modal-content {
-    margin: auto;
-    display: block;
-    max-width: 90%;
-    max-height: 90%;
-    background: white;
-    border-radius: 15px;
-    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
-    padding: 20px;
-    text-align: center;
-    transform: scale(0.8);
-    transition: transform 0.3s ease;
-}
-
-.modal.visible .modal-content {
-    transform: scale(1);
-}
-
-/* Image inside the Modal */
-#modal-image-container {
-    width: 100%;
-    max-height: 70vh;
-    overflow: hidden;
-    margin-bottom: 15px;
-    position: relative;
-    border-radius: 10px;
-}
-
-#modal-image-container img {
-    max-width: 100%;
-    max-height: 70vh;
-    height: auto;
-    object-fit: contain; /* CRITICAL: Use contain to view the entire picture */
-    cursor: pointer; /* Indicates the image itself can be toggled */
-    transition: opacity 0.3s ease;
-    border: 3px solid #667eea;
-    border-radius: 10px;
-}
-
-/* Details inside the Modal */
-.modal-details h3 {
-    color: #764ba2;
-    font-size: 1.8em;
-    margin-bottom: 5px;
-}
-
-.modal-details p {
-    color: #666;
-    font-style: italic;
-    font-size: 1.1em;
-    margin-bottom: 15px;
-}
-
-/* The Close Button */
-.close-button {
-    position: absolute;
-    top: 15px;
-    right: 35px;
-    color: #f1f1f1;
-    font-size: 40px;
-    font-weight: bold;
-    transition: 0.3s;
-    cursor: pointer;
-    text-shadow: 0 0 5px rgba(0,0,0,0.5);
-}
-
-.close-button:hover,
-.close-button:focus {
-    color: #bbb;
-}
-
-/* Hide the body scroll bar when modal is open */
-.modal-open {
-    overflow: hidden;
-}
-    </style>
 </head>
 <body>
 
@@ -330,15 +376,13 @@
     <div id="intro-caricature-container">
         <div class="focus-card">
             <img src="./caricature.jpg" alt="Team Caricature Drawing"> 
-
-             <h1> 26th Commission </h1>
+            <h1>Team HQST 2025</h1>
         </div>
     </div>
     
     <div id="main-photo-focus" class="hidden">
         <div class="focus-card">
             <img src="./main.jpg" alt="Main Team Photo"> 
-
             <h1>Team HQST 2025</h1>
         </div>
     </div>
@@ -346,13 +390,13 @@
     <h2 class="gallery-title"> Best Wishes from Team ✨</h2>
 
     <div class="photo-gallery" id="main-gallery">
-        </div>
+    </div>
 
     <div id="image-modal" class="modal">
         <span class="close-button">&times;</span>
         <div class="modal-content">
             <div id="modal-image-container">
-                </div>
+            </div>
             <div class="modal-details">
                 <h3 id="modal-name"></h3>
                 <p id="modal-comment"></p>
@@ -381,137 +425,176 @@
             '"The definition of leadership and focus."',
         ];
 
+        // ✉️ NEW: Pastel Color Palettes for the Envelopes (Card Body, Flap Light, Flap Dark)
+        const pastelPalettes = [
+            // Pink / Rose
+            { bg: '#fef3f4', flapLight: '#fcd3e5', flapDark: '#f7a8c3' },
+            // Mint / Green
+            { bg: '#f3fef3', flapLight: '#c3fcc3', flapDark: '#99e699' },
+            // Yellow / Peach
+            { bg: '#fffce8', flapLight: '#feeaa2', flapDark: '#fcdc70' },
+            // Lavender / Purple
+            { bg: '#f5f3f9', flapLight: '#dacaf0', flapDark: '#bfa7e8' },
+            // Blue / Cyan
+            { bg: '#f2f9ff', flapLight: '#c0e0ff', flapDark: '#96c4ff' },
+        ];
+
+
         for (let i = 1; i <= 32; i++) {
             const rank = ranks[Math.floor(Math.random() * ranks.length)];
             const dept = departments[Math.floor(Math.random() * departments.length)];
             const name = `Random ${i}`;
             const comment = comments[Math.floor(Math.random() * comments.length)];
+            const palette = pastelPalettes[i % pastelPalettes.length]; // Cycle through colors
 
             galleryData.push({
                 id: i,
                 name: `${rank} ${name}, ${dept}`,
                 comment: comment,
-                originalFile: `${i}.JPG`, // Assumes photos are photo_1.jpg to photo_32.jpg
-                caricatureFile: `${i}.png` // Assumes caricatures are caricature_1.png to caricature_32.png
+                originalFile: `${i}.JPG`,
+                caricatureFile: `${i}.png`,
+                palette: palette
             });
         }
 
         // --- 2. MODAL & FOCUS VARIABLES ---
-    const modal = document.getElementById("image-modal");
-    const modalImageContainer = document.getElementById("modal-image-container");
-    const modalName = document.getElementById("modal-name");
-    const modalComment = document.getElementById("modal-comment");
-    const closeBtn = document.querySelector(".close-button");
-    let currentModalItem = null; // Stores the data object of the currently displayed item
+        const modal = document.getElementById("image-modal");
+        const modalImageContainer = document.getElementById("modal-image-container");
+        const modalName = document.getElementById("modal-name");
+        const modalComment = document.getElementById("modal-comment");
+        const closeBtn = document.querySelector(".close-button");
+        let currentModalItem = null;
 
-    // --- 3. MODAL CONTROL FUNCTIONS ---
+        // --- 3. MODAL CONTROL FUNCTIONS ---
 
-    function openModal(item) {
-        currentModalItem = item;
-        
-        // 1. Populate details
-        modalName.textContent = item.name;
-        modalComment.textContent = item.comment;
-        
-        // 2. Set the initial image (Original)
-        modalImageContainer.innerHTML = `
-            <img id="modal-image" src="${originalPath}${item.originalFile}" data-original="${originalPath}${item.originalFile}" data-caricature="${caricaturePath}${item.caricatureFile}" alt="${item.name}">
-        `;
+        function openModal(item) {
+            currentModalItem = item;
+            
+            // 1. Populate details
+            modalName.textContent = item.name;
+            modalComment.textContent = item.comment;
+            
+            // 2. Set the initial image (Original)
+            modalImageContainer.innerHTML = `
+                <img id="modal-image" src="${originalPath}${item.originalFile}" data-original="${originalPath}${item.originalFile}" data-caricature="${caricaturePath}${item.caricatureFile}" alt="${item.name}">
+            `;
 
-        // 3. Add toggle listener to the image itself
-        document.getElementById('modal-image').addEventListener('click', toggleModalImage);
-        
-        // 4. Show modal
-        modal.classList.add('visible');
-        document.body.classList.add('modal-open');
-    }
-
-    function closeModal() {
-        modal.classList.remove('visible');
-        document.body.classList.remove('modal-open');
-        currentModalItem = null;
-    }
-
-    function toggleModalImage() {
-        const imgElement = document.getElementById('modal-image');
-        const currentSrc = imgElement.getAttribute('src');
-        const originalSrc = imgElement.getAttribute('data-original');
-        const caricatureSrc = imgElement.getAttribute('data-caricature');
-
-        if (currentSrc === originalSrc) {
-            imgElement.setAttribute('src', caricatureSrc);
-        } else {
-            imgElement.setAttribute('src', originalSrc);
+            // 3. Add toggle listener to the image itself
+            document.getElementById('modal-image').addEventListener('click', toggleModalImage);
+            
+            // 4. Show modal
+            modal.classList.add('visible');
+            document.body.classList.add('modal-open');
         }
-    }
 
-    // Close modal via button or outside click
-    closeBtn.onclick = closeModal;
-    window.onclick = function(event) {
-        if (event.target === modal) {
-            closeModal();
+        function closeModal() {
+            modal.classList.remove('visible');
+            document.body.classList.remove('modal-open');
+            currentModalItem = null;
         }
-    }
-    // Close modal via ESC key
-    document.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape' && modal.classList.contains('visible')) {
-            closeModal();
+
+        function toggleModalImage() {
+            const imgElement = document.getElementById('modal-image');
+            const currentSrc = imgElement.getAttribute('src');
+            const originalSrc = imgElement.getAttribute('data-original');
+            const caricatureSrc = imgElement.getAttribute('data-caricature');
+
+            if (currentSrc === originalSrc) {
+                imgElement.setAttribute('src', caricatureSrc);
+            } else {
+                imgElement.setAttribute('src', originalSrc);
+            }
         }
-    });
 
-
-    // --- 4. DYNAMIC GALLERY POPULATION ---
-    const mainGallery = document.getElementById('main-gallery');
-    // Using simple paths based on previous solution. Ensure these are correct.
-    const originalPath = 'original images/'; 
-    const caricaturePath = 'caricature outline/'; 
-
-    galleryData.forEach((item, index) => {
-        const photoItem = document.createElement('div');
-        photoItem.className = 'photo-item';
-        photoItem.style.animationDelay = `${(index % 6) * 0.1 + 0.1}s`;
-
-        // We only show the original image in the small tile now for simplicity
-        photoItem.innerHTML = `
-            <div class="image-toggle-container">
-                <img src="${originalPath}${item.originalFile}" alt="Photo of ${item.name}" class="original-image">
-            </div>
-            <div class="details">
-                <h3 class="name">${item.name}</h3>
-                <p class="comment">${item.comment}</p>
-            </div>
-        `;
-        
-        // 🛑 NEW: Clicking opens the modal, passing the item data
-        photoItem.addEventListener('click', function() {
-            openModal(item);
+        // Close modal via button or outside click
+        closeBtn.onclick = closeModal;
+        window.onclick = function(event) {
+            if (event.target === modal) {
+                closeModal();
+            }
+        }
+        // Close modal via ESC key
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && modal.classList.contains('visible')) {
+                closeModal();
+            }
         });
 
-        mainGallery.appendChild(photoItem);
-    });
+        // --- 4. INTERSECTION OBSERVER SETUP (For shake-in effect) ---
+        const observer = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    // When element enters viewport, apply the animation class
+                    entry.target.classList.add('shake-in');
+                    // Stop observing it once it's animated
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, {
+            rootMargin: '0px',
+            threshold: 0.1
+        });
+
+        // --- 5. DYNAMIC GALLERY POPULATION ---
+        const mainGallery = document.getElementById('main-gallery');
+        const originalPath = 'original images/'; 
+        const caricaturePath = 'caricature outline/'; 
+
+        galleryData.forEach((item) => {
+            const photoItem = document.createElement('div');
+            photoItem.className = 'photo-item';
+
+            // ✉️ NEW: Set CSS custom properties for color
+            photoItem.style.setProperty('--card-bg-color', item.palette.bg);
+            photoItem.style.setProperty('--flap-color-light', item.palette.flapLight);
+            photoItem.style.setProperty('--flap-color-dark', item.palette.flapDark);
+            
+            // Set the unique animation delay property here for staggered entry
+            photoItem.style.setProperty('--animation-delay', `${(item.id % 6) * 0.1 + 0.1}s`);
 
 
-    // --- 5. PRIMARY FOCUS TOGGLE LOGIC (Unchanged) ---
-    const caricatureFocus = document.getElementById('intro-caricature-container');
-    const mainPhotoFocus = document.getElementById('main-photo-focus');
-    
-    function toggleFocusView() {
-        caricatureFocus.classList.toggle('hidden');
-        mainPhotoFocus.classList.toggle('hidden');
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-    }
+            photoItem.innerHTML = `
+                <div class="image-toggle-container">
+                    <img src="${originalPath}${item.originalFile}" alt="Photo of ${item.name}" class="original-image">
+                </div>
+                <div class="details">
+                    <h3 class="name">${item.name}</h3>
+                    <p class="comment">${item.comment}</p>
+                </div>
+            `;
+            
+            // Clicking opens the modal
+            photoItem.addEventListener('click', function() {
+                openModal(item);
+            });
 
-    caricatureFocus.addEventListener('click', toggleFocusView);
-    mainPhotoFocus.addEventListener('click', toggleFocusView);
+            mainGallery.appendChild(photoItem);
+            // Start observing the new element
+            observer.observe(photoItem);
+        });
 
-    // --- 6. SCROLL INDICATOR LOGIC (Unchanged) ---
-    window.addEventListener('scroll', function() {
-        if (window.scrollY > 100) {
-            document.body.classList.add('scrolled');
-        } else {
-            document.body.classList.remove('scrolled');
+
+        // --- 6. PRIMARY FOCUS TOGGLE LOGIC (Unchanged) ---
+        const caricatureFocus = document.getElementById('intro-caricature-container');
+        const mainPhotoFocus = document.getElementById('main-photo-focus');
+        
+        function toggleFocusView() {
+            caricatureFocus.classList.toggle('hidden');
+            mainPhotoFocus.classList.toggle('hidden');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
         }
-    });
+
+        caricatureFocus.addEventListener('click', toggleFocusView);
+        mainPhotoFocus.addEventListener('click', toggleFocusView);
+
+        // --- 7. SCROLL INDICATOR LOGIC (Unchanged) ---
+        window.addEventListener('scroll', function() {
+            if (window.scrollY > 100) {
+                document.body.classList.add('scrolled');
+            } else {
+                document.body.classList.remove('scrolled');
+            }
+        });
     </script>
 
 </body>
