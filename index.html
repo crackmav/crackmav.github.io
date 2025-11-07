@@ -148,10 +148,9 @@
         opacity: 1;
         transform: translateY(0) rotate(0deg);
         animation: shake-in-animate 1.2s ease-out; 
-        animation-delay: var(--animation-delay, 0s); /* Use JS variable */
+        animation-delay: var(--animation-delay, 0s);
     }
 
-    /* The Shaking Keyframes */
     @keyframes shake-in-animate {
         0% { transform: scale(0.95) rotate(-2deg); }
         20% { transform: scale(1.05) rotate(3deg); }
@@ -168,8 +167,8 @@
         top: 0;
         left: 0;
         width: 100%;
-        height: 80px; /* Flap height */
-        /* POLISH: Flap color now matches the body color variable exactly */
+        height: 80px;
+        /* Flap color matches the body color variable */
         background: var(--card-bg-color, #ffffff); 
         clip-path: polygon(0 0, 100% 0, 50% 100%, 0 0);
         z-index: 1; 
@@ -184,7 +183,6 @@
         transform: scaleY(0.9) translateY(-5px); 
     }
 
-    /* Keyframes for random flap animation */
     @keyframes flapOpen {
         0% { transform: rotateX(0deg); }
         50% { transform: rotateX(90deg) translateY(-10px); }
@@ -197,19 +195,17 @@
         100% { transform: rotateX(0deg); }
     }
 
-    /* Class to apply random flap animation */
     .photo-item.animate-flap::before {
         animation: var(--flap-animation-name) var(--flap-animation-duration) ease-in-out infinite alternate;
     }
 
-
     /* --- Image Toggle Container (The "Letter" part peeking out) --- */
     .image-toggle-container {
         width: 100%;
-        height: 160px; /* Visible image area */
+        height: 160px;
         position: relative;
         overflow: hidden;
-        margin-top: 40px; /* Half the flap height */
+        margin-top: 5px; /* Half the flap height */
         border-radius: 0; 
         z-index: 0; 
     }
@@ -225,13 +221,10 @@
         transition: opacity 0.4s ease, transform 0.5s ease;
     }
 
-    /* Image Toggle States (Original/Caricature) */
     .caricature-image { opacity: 0; transform: scale(1); }
     .original-image { opacity: 1; transform: scale(1); }
     .photo-item.toggled .caricature-image { opacity: 1; transform: scale(1); filter: grayscale(0); }
     .photo-item.toggled .original-image { opacity: 0; transform: scale(0.9); filter: brightness(0.7); }
-
-    /* General Hover Effects */
     .photo-item:hover .original-image:not(.hidden) { transform: scale(1.05); filter: brightness(0.95); }
     .photo-item.toggled:hover .caricature-image { transform: scale(1.05); }
 
@@ -249,7 +242,6 @@
     .comment { font-style: italic; color: #666; font-size: 0.95em; line-height: 1.6; }
     .photo-item:hover { transform: translateY(-15px) rotateX(5deg) scale(1.02); box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3); }
 
-    /* ✨ Icon adjustment */
     .photo-item::after { 
         content: '✨'; 
         position: absolute; 
@@ -263,7 +255,6 @@
     }
     .photo-item:hover::after { opacity: 1; transform: scale(1) rotate(0deg); }
 
-    /* --- General Animations --- */
     @keyframes fadeInDown { from { opacity: 0; transform: translateY(-30px); } to { opacity: 1; transform: translateY(0); } }
     @keyframes scaleIn { from { opacity: 0; transform: scale(0.9); } to { opacity: 1; transform: scale(1); } }
     
@@ -271,80 +262,45 @@
     @media (max-width: 600px) { 
         header h1 { font-size: 2em; } 
         
-        .focus-card {
-            width: 100%; 
-            margin: 0 10px; 
-            padding: 15px;
-        }
-        .focus-card img {
-            max-height: 65vh; 
-        }
-        #intro-caricature-container, #main-photo-focus {
-            padding: 10px 0; 
-            min-height: 75vh;
-        }
-        .gallery-title {
-             padding-top: 20px; 
-        }
+        .focus-card { width: 100%; margin: 0 10px; padding: 15px; }
+        .focus-card img { max-height: 65vh; }
+        #intro-caricature-container, #main-photo-focus { padding: 10px 0; min-height: 75vh; }
+        .gallery-title { padding-top: 20px; }
 
-        /* 1. Gallery Layout */
-        .photo-gallery { 
-            display: block; 
-            padding: 10px; 
-        } 
+        .photo-gallery { display: block; padding: 10px; } 
         .photo-item { 
             margin: 0 10px 20px 10px; 
             transform: none !important; 
             animation: scaleIn 0.5s ease-out backwards;
             transition: all 0.3s ease;
         } 
-        .photo-item:hover { 
-            transform: none !important; 
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15); 
-        }
+        .photo-item:hover { transform: none !important; box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15); }
         
-        /* 2. Envelope Flap Size (Mobile) */
-        .photo-item::before { 
-            /* POLISH: Consistent ratio for mobile */
-            height: 60px; 
-        } 
-        .image-toggle-container { 
-            /* POLISH: Consistent ratio for mobile */
-            height: 120px; 
-            margin-top: 30px; /* Half of new flap height */
-        }
+        .photo-item::before { height: 60px; } 
+        .image-toggle-container { height: 120px; margin-top: 30px; }
         
-        /* 3. Text & Icon Size */
         .name { font-size: 1.2em; }
         .comment { font-size: 0.85em; }
         .details { padding: 20px 15px; }
-        .photo-item::after { 
-            top: 15px; 
-            right: 10px; 
-            font-size: 1.2em; 
-        }
-        .photo-item:hover::after, .photo-item:hover::before { 
-             transform: none !important;
-        }
+        .photo-item::after { top: 15px; right: 10px; font-size: 1.2em; }
+        .photo-item:hover::after, .photo-item:hover::before { transform: none !important; }
 
         /* 4. Modal Optimization */
         .modal-content {
             max-width: 95%; 
             max-height: 95vh;
-            padding: 15px;
+            padding: 20px 15px 15px 15px; /* More top padding for button */
             word-wrap: break-word; 
             overflow-wrap: break-word; 
         }
         
-        #modal-image-container img {
-            max-height: 60vh; 
-        }
+        #modal-image-container img { max-height: 60vh; }
         
+        /* 💡 FIX: Close button styles adjusted for mobile */
         .close-button {
-            position: absolute; 
-            top: 5px;
-            right: 15px;
-            font-size: 45px;
+            top: 8px;
+            right: 12px;
+            font-size: 30px;
             padding: 5px;
         }
         
@@ -375,21 +331,40 @@
         backdrop-filter: blur(5px); opacity: 0; transition: opacity 0.3s ease;
     }
     .modal.visible { display: flex; opacity: 1; }
+    
     .modal-content {
         margin: auto; display: block; max-width: 90%; max-height: 90%;
         background: white; border-radius: 15px; box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
-        padding: 20px; text-align: center; transform: scale(0.8); transition: transform 0.3s ease;
+        padding: 25px 20px 20px 20px; /* More top padding for button */
+        text-align: center; transform: scale(0.8); transition: transform 0.3s ease;
+        /* 💡 FIX: Set position relative for child button */
+        position: relative; 
     }
     .modal.visible .modal-content { transform: scale(1); }
+    
     #modal-image-container { width: 100%; max-height: 70vh; overflow: hidden; margin-bottom: 15px; position: relative; border-radius: 10px; }
     #modal-image-container img { max-width: 100%; max-height: 70vh; height: auto; object-fit: contain; cursor: pointer; transition: opacity 0.3s ease; border: 3px solid #667eea; border-radius: 10px; }
     .modal-details h3 { color: #764ba2; font-size: 1.8em; margin-bottom: 5px; }
     .modal-details p { color: #666; font-style: italic; font-size: 1.1em; margin-bottom: 15px; }
+    
+    /* 💡 FIX: Close button positioned INSIDE modal-content */
     .close-button {
-        position: absolute; top: 15px; right: 35px; color: #f1f1f1; font-size: 40px;
-        font-weight: bold; transition: 0.3s; cursor: pointer; text-shadow: 0 0 5px rgba(0,0,0,0.5);
+        position: absolute; 
+        top: 10px; 
+        right: 15px; 
+        /* Visible on white background */
+        color: #888; 
+        font-size: 35px;
+        font-weight: bold; 
+        transition: 0.3s; 
+        cursor: pointer;
+        z-index: 10;
+        line-height: 1;
+        padding: 0 5px;
+        /* Removed text-shadow, not needed on white bg */
     }
-    .close-button:hover, .close-button:focus { color: #bbb; }
+    .close-button:hover, .close-button:focus { color: #000; }
+    
     .modal-open { overflow: hidden; }
 </style>
 </head>
@@ -420,14 +395,14 @@
     </div>
 
     <div id="image-modal" class="modal">
-        <span class="close-button">&times;</span>
         <div class="modal-content">
+            <span class="close-button">&times;</span>
             <div id="modal-image-container">
             </div>
             <div class="modal-details">
                 <h3 id="modal-name"></h3>
                 <p id="modal-comment"></p>
-                <p style="font-size: 0.9em; color: #aaa;">Click the photo to switch between original and caricature!</p>
+                <p style="font-size: 0.9em; color: #aaa;">Click the photo to switch!</p>
             </div>
         </div>
     </div>
@@ -475,29 +450,31 @@ document.addEventListener('DOMContentLoaded', () => {
 31,Cdr Shivshankar B Patil ,Mrs Savitri Patil,Shivansh- Vedansh
 32,Lt Cdr Govind Kumar Jha ,Mrs Kalpana Jha,Yatika Jha`;
 
+    // 💡 FIX: New, richer/darker color palette
     const pastelPalettes = [
-        { bg: '#fef3f4', flapLight: '#fcd3e5', flapDark: '#f7a8c3' },
-        { bg: '#f3fef3', flapLight: '#c3fcc3', flapDark: '#99e699' },
-        { bg: '#fffce8', flapLight: '#feeaa2', flapDark: '#fcdc70' },
-        { bg: '#f5f3f9', flapLight: '#dacaf0', flapDark: '#bfa7e8' },
-        { bg: '#f2f9ff', flapLight: '#c0e0ff', flapDark: '#96c4ff' },
+        { bg: '#fddde6', flapLight: '#fcd3e5', flapDark: '#f7a8c3' }, // Pink
+        { bg: '#e0f8e0', flapLight: '#c3fcc3', flapDark: '#99e699' }, // Green
+        { bg: '#fff9c4', flapLight: '#feeaa2', flapDark: '#fcdc70' }, // Yellow
+        { bg: '#e6e0f8', flapLight: '#dacaf0', flapDark: '#bfa7e8' }, // Purple
+        { bg: '#dcf0ff', flapLight: '#c0e0ff', flapDark: '#96c4ff' }  // Blue
     ];
     
     const originalPath = 'original images/'; 
     const caricaturePath = 'caricature outline/'; 
 
+    // 💡 FIX: Main photos now toggle to each other
     const focusData = {
         caricature: {
             name: "Team HQST 2025 Caricature",
-            comment: "Click to see the full photo and zoom in!",
+            comment: "Click to see the real team photo!",
             originalFile: "caricature.jpg", 
-            caricatureFile: "caricature.jpg"
+            caricatureFile: "main.jpg" // Toggles to main photo
         },
         main: {
-            name: "Team HQST 2025 Main Photo",
-            comment: "Best wishes and fathoms beneath your keel from Team HQST!",
+            name: "Team HQST 2025",
+            comment: "Click on photo to toggle the team caricature!",
             originalFile: "main.jpg", 
-            caricatureFile: "main.jpg"
+            caricatureFile: "caricature.jpg" // Toggles to caricature
         }
     };
 
@@ -506,15 +483,13 @@ document.addEventListener('DOMContentLoaded', () => {
     const modalImageContainer = document.getElementById("modal-image-container");
     const modalName = document.getElementById("modal-name");
     const modalComment = document.getElementById("modal-comment");
-    const closeBtn = document.querySelector(".close-button");
+    // 💡 FIX: Button query is now inside modal-content
+    const closeBtn = document.querySelector(".modal-content .close-button");
     const mainGallery = document.getElementById('main-gallery');
     const caricatureFocus = document.getElementById('intro-caricature-container');
     const mainPhotoFocus = document.getElementById('main-photo-focus');
 
-    // --- State ---
     let currentModalItem = null;
-
-    // --- Logic Functions ---
 
     /**
      * Parses the CSV string and converts it into structured gallery data.
@@ -536,12 +511,14 @@ document.addEventListener('DOMContentLoaded', () => {
             if (!isEmpty(item.Wife)) {
                 cardComment = `With love from ${item.Wife}`;
                 if (!isEmpty(item.Kids)) {
-                    cardComment += ` and the kids: ${item.Kids}.`;
+                    // 💡 FIX: Replaces hyphen with &
+                    const kidsFormatted = item.Kids.replace(/-/g, ' & ');
+                    cardComment += ` and the kids: ${kidsFormatted}.`;
                 } else {
                     cardComment += `.`;
                 }
             } else {
-                cardComment = "Best wishes from the team!"; // Fallback for single members
+                cardComment = "Best wishes from the team!"; // Fallback
             }
 
             result.push({
@@ -549,7 +526,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 name: item.Name,
                 wife: item.Wife,
                 kids: item.Kids,
-                comment: cardComment, // This is the card comment
+                comment: cardComment, // This is the final card comment
                 originalFile: `${item.Ser}.JPG`,
                 caricatureFile: `${item.Ser}.png`,
                 palette: pastelPalettes[(parseInt(item.Ser, 10) - 1) % pastelPalettes.length]
@@ -570,23 +547,12 @@ document.addEventListener('DOMContentLoaded', () => {
         // 1. Populate details
         modalName.textContent = item.name;
         
-        // Build the *modal* comment
-        let fullModalComment;
+        // 💡 FIX: Modal comment is now identical to card comment for gallery items
         if (isFocusImage) {
-            fullModalComment = item.comment; // Use pre-set comment for focus items
-        } else if (!isEmpty(item.wife)) {
-            // Has a wife/partner, build comment
-            fullModalComment = `A loving tribute from ${item.wife}`;
-            if (!isEmpty(item.kids)) {
-                fullModalComment += `, and best wishes from ${item.kids}.`;
-            } else {
-                fullModalComment += `.`;
-            }
+            modalComment.textContent = item.comment; // Use pre-set comment for focus items
         } else {
-            // Single, or no wife listed
-            fullModalComment = `Best wishes from ${item.name}!`; 
+            modalComment.textContent = item.comment; // Use the exact, pre-built card comment
         }
-        modalComment.textContent = fullModalComment;
         
         // 2. Set the initial image 
         modalImageContainer.innerHTML = `
@@ -597,8 +563,7 @@ document.addEventListener('DOMContentLoaded', () => {
                  alt="${item.name}">
         `;
 
-        // 3. Add toggle listener to the image itself
-        // We must re-query this every time as it's dynamically created
+        // 3. Add toggle listener
         document.getElementById('modal-image').addEventListener('click', toggleModalImage);
         
         // 4. Show modal
@@ -614,12 +579,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function toggleModalImage() {
         const imgElement = document.getElementById('modal-image');
-        if (!imgElement) return; // Guard clause
+        if (!imgElement) return;
         
         const currentSrc = imgElement.getAttribute('src');
         const originalSrc = imgElement.getAttribute('data-original');
         const caricatureSrc = imgElement.getAttribute('data-caricature');
 
+        // This logic now works for the main photos too
         if (currentSrc === originalSrc) {
             imgElement.setAttribute('src', caricatureSrc);
         } else {
@@ -640,14 +606,11 @@ document.addEventListener('DOMContentLoaded', () => {
             photoItemElement.style.setProperty('--flap-animation-duration', `${duration}s`);
             photoItemElement.classList.add('animate-flap');
 
-            // Set up the next cycle
             setTimeout(() => {
                 photoItemElement.classList.remove('animate-flap');
-                // Wait 2-7 seconds before next animation
                 setTimeout(applyRandomAnimation, (Math.random() * 5000) + 2000); 
             }, duration * 1000 + 500); 
         };
-        // Stagger the initial start
         setTimeout(applyRandomAnimation, (Math.random() * 1000) + 500); 
     }
 
@@ -662,23 +625,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // --- Initialization ---
 
-    // 1. Parse Data
     const galleryData = parseCSV(csvDataString);
 
-    // 2. Setup Intersection Observer
     const observer = new IntersectionObserver((entries, obs) => {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
                 const item = entry.target;
-                // Shake-in animation
                 const delay = item.style.getPropertyValue('--animation-delay');
                 item.style.animationDelay = delay; 
                 item.classList.add('shake-in');
-                
-                // Start random flap animation
                 startRandomFlapAnimation(item); 
-                
-                // Done, stop observing
                 obs.unobserve(item);
             }
         });
@@ -687,15 +643,14 @@ document.addEventListener('DOMContentLoaded', () => {
         threshold: 0.1
     });
 
-    // 3. Populate Gallery
+    // Populate Gallery
     galleryData.forEach((item) => {
         const photoItem = document.createElement('div');
         photoItem.className = 'photo-item';
 
-        // Set CSS custom properties for color and stagger animation
         photoItem.style.setProperty('--card-bg-color', item.palette.bg);
         photoItem.style.setProperty('--flap-color-light', item.palette.flapLight);
-        photoItem.style.setProperty('--flap-color-dark', item.palette.flapDark);
+        photoItem.style.setProperty('--flap-color-dark', new Date().toString().split(" ")[2]); // Unused, just for fun
         photoItem.style.setProperty('--animation-delay', `${(item.id % 6) * 0.1 + 0.1}s`);
 
         photoItem.innerHTML = `
@@ -709,45 +664,43 @@ document.addEventListener('DOMContentLoaded', () => {
             </div>
         `;
         
-        // Clicking opens the gallery modal
         photoItem.addEventListener('click', () => {
             openModal(item, false);
         });
 
         mainGallery.appendChild(photoItem);
-        observer.observe(photoItem); // Observe for animations
+        observer.observe(photoItem);
     });
 
 
-    // 4. Attach Main Event Listeners
-    
-    // Modal close events
+    // Attach Main Event Listeners
     closeBtn.addEventListener('click', closeModal);
+    
     window.addEventListener('click', (event) => {
+        // Close if user clicks the dark background
         if (event.target === modal) {
             closeModal();
         }
     });
+    
     document.addEventListener('keydown', (e) => {
         if (e.key === 'Escape' && modal.classList.contains('visible')) {
             closeModal();
         }
     });
     
-    // Focus header click events
     caricatureFocus.addEventListener('click', (e) => {
-        openModal(focusData.caricature, true); // Open focus modal
+        openModal(focusData.caricature, true);
         e.stopPropagation(); 
         toggleFocusView();
     });
     
     mainPhotoFocus.addEventListener('click', (e) => {
-        openModal(focusData.main, true); // Open focus modal
+        openModal(focusData.main, true);
         e.stopPropagation();
         toggleFocusView();
     });
 
-    // Scroll indicator logic
     window.addEventListener('scroll', () => {
         if (window.scrollY > 100) {
             document.body.classList.add('scrolled');
