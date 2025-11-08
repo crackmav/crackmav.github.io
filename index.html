@@ -538,38 +538,6 @@
             font-size: 0.8em !important;
         }
 
-
-        /* ===== FIX 1: Kids Section - High Contrast Colors ===== */
-.kids-info {
-    background: linear-gradient(135deg, #000000 0%, #ffe69c 100%);
-    padding: 8px 12px;
-    border-radius: 10px;
-    margin: 10px 0 5px 0;
-    text-align: center;
-    box-shadow: 0 2px 6px rgba(255, 193, 7, 0.3);
-    border: 1px solid #ffc107;
-}
-
-.kids-info p {
-    color: #000000 !important;  /* Pure black */
-    font-size: 0.82em !important;
-    font-style: normal !important;
-    margin: 0 !important;
-    font-weight: 600 !important;
-    line-height: 1.4 !important;
-}
-
-.kids-label {
-    font-weight: 700 !important;
-    color: #d32f2f !important;  /* Strong red */
-    margin-right: 3px;
-}
-
-.kids-names {
-    font-weight: 700 !important;
-    color: #000000 !important;  /* Strong blue */
-}
-
 /* ===== FIX 2: Clean Up Gallery Layout ===== */
 
 /* Reduce card padding for cleaner look */
@@ -739,6 +707,13 @@
     animation: burst-out 0.8s cubic-bezier(0.68, -0.55, 0.27, 1.55) forwards;  /* Springier burst */
 }
 
+.kids-wishes {
+    color: #000000 !important;
+    font-weight: 600;
+    font-size: 0.9em;
+    margin-top: 8px;
+}
+
 @keyframes burst-out {
     0% {
         transform: translate(0, 0) scale(0.1);
@@ -751,8 +726,22 @@
         transform: translate(var(--x), var(--y)) scale(1.5);
         opacity: 0;
     }
+    
 }
 
+.modal-comment {
+    color: #333;
+    background: linear-gradient(90deg,#fffbe6 60%, #fffff0 100%);
+    border-radius: 10px;
+    padding: 14px 18px;
+    font-size: 1.14em;
+    font-family: 'Lato', sans-serif;
+    line-height: 1.8;
+    box-shadow: 0 2px 12px 0 rgba(180,170,60,0.11);
+    margin: 10px 0 25px 0;
+    text-align: left;
+    letter-spacing: 0.01em;
+}
 
         
     }
@@ -789,7 +778,7 @@
         </div>
     </div>
 
-    <h2 class="gallery-title">🎖️ Heartfelt Wishes 🎖️</h2>
+    <h2 class="gallery-title"> 💫 Heartfelt Wishes 🤞</h2>
 
     <div class="photo-gallery" id="main-gallery">
     </div>
@@ -803,7 +792,17 @@
             <div class="modal-details">
                 <h3 id="modal-name"></h3>
                 <div id="modal-designation-container"></div>
-                <p id="modal-comment"></p>
+                <p id="modal-comment" style = "color: #333;
+    background: linear-gradient(90deg,#fffbe6 60%, #fffff0 100%);
+    border-radius: 10px;
+    padding: 14px 18px;
+    font-size: 1.14em;
+    font-family: 'Lato', sans-serif;
+    line-height: 1.8;
+    box-shadow: 0 2px 12px 0 rgba(180,170,60,0.11);
+    margin: 10px 0 25px 0;
+    text-align: left;
+    letter-spacing: 0.01em;"></p>
                 <p class="modal-hint">Tap the photo to switch!</p>
             </div>
         </div>
@@ -1088,18 +1087,18 @@ galleryData.forEach((item) => {
         cardNameDisplay += ` & ${firstName}`;
     }
 
-    // Format kids for card - compact version
-    // let kidsCardHTML = '';❤️
-    // if (item.kids && !isEmpty(item.kids)) {
-    //     const kidsFormatted = item.kids.replace(/,/g, ' &');
-    //     kidsCardHTML = `
-    //         <div class="kids-info">
-    //             <p><span class="kids-label">❤️ With love from:</span> ${kidsFormatted}</p>
-    //         </div>
-    //     `;
-    // }
-
+   // Format kids for card - compact version
     let kidsCardHTML = '❤️';
+    if (item.kids && !isEmpty(item.kids)) {
+        const kidsFormatted = item.kids.replace(/,/g, ' &');
+        kidsCardHTML += `
+            <div class="kids-wishes">
+                <p style="color:#000 !important;"> With best wishes from ${kidsFormatted} 👶</p>
+            </div>
+        `;
+    }
+
+   
 
     photoItem.innerHTML = `
         <div class="image-toggle-container">
