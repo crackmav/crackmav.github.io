@@ -3,20 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Wall of Love</title>
+    <title>Wall of Love - FOST Farewell</title>
     
 <style>
-    /* 💡 1. IMPORT NEW FONTS (Pacifico for script, Lato for body) */
     @import url('https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&family=Pacifico&display=swap');
 
-    /* General Reset and Styling */
     * {
         margin: 0;
         padding: 0;
         box-sizing: border-box;
     }
 
-    /* 💡 2. NEW ANIMATED "SPARKLY" BACKGROUND (Kept from last version) */
     @keyframes move-sparkles {
         0% { transform: translateY(0); }
         100% { transform: translateY(-100vh); }
@@ -42,7 +39,7 @@
         opacity: 0;
         animation: move-sparkles 10s linear infinite;
     }
-    /* ... (sparkle particle distribution styles remain the same) ... */
+    
     .sparkle:nth-child(1) { top: 20%; left: 10%; animation-duration: 12s; animation-delay: -1s; opacity: 0.7; }
     .sparkle:nth-child(2) { top: 80%; left: 30%; animation-duration: 15s; animation-delay: -3s; opacity: 0.5; }
     .sparkle:nth-child(3) { top: 50%; left: 90%; animation-duration: 10s; animation-delay: -5s; opacity: 0.8; }
@@ -60,11 +57,10 @@
     .sparkle:nth-child(15) { top: 95%; left: 35%; animation-duration: 11s; animation-delay: -3.2s; opacity: 0.9; }
 
     body {
-        /* 💡 Set new base font and dark-theme color */
         font-family: 'Lato', sans-serif;
-        background: transparent; /* Show the sparkly background */
+        background: transparent;
         min-height: 100vh;
-        color: #f0f0f0; /* Light text for dark background */
+        color: #f0f0f0;
         overflow-x: hidden;
     }
 
@@ -78,7 +74,6 @@
     }
 
     header h1 {
-        /* 💡 Use Pacifico font */
         font-family: 'Pacifico', cursive;
         font-size: 4.5em; 
         font-weight: 400; 
@@ -93,7 +88,6 @@
         opacity: 0.9;
     }
 
-    /* --- FOCUS SECTIONS --- */
     .hidden {
         display: none !important;
     }
@@ -110,7 +104,6 @@
     }
 
     .focus-card {
-        /* 💡 Reverted to a light-themed card for the focus image */
         background: white;
         border-radius: 20px;
         box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
@@ -138,7 +131,6 @@
     }
 
     .focus-card h1 {
-        /* 💡 Use Pacifico font, but make it dark for the light card */
         font-family: 'Pacifico', cursive;
         color: #764ba2;
         font-size: 3em;
@@ -156,7 +148,6 @@
 
     .gallery-title {
         text-align: center;
-        /* 💡 Use Pacifico font */
         font-family: 'Pacifico', cursive;
         color: #fff; 
         font-size: 3.5em;
@@ -166,8 +157,6 @@
         margin-top: 0; 
     }
 
-
-    /* --- Core Grid Layout (Scrollable Gallery) --- */
     .photo-gallery {
         display: grid;
         grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
@@ -178,9 +167,7 @@
         perspective: 1200px;
     }
 
-    /* 💡 Style for each photo item (Card Base) - REVERTED */
     .photo-item {
-        /* 💡 REVERTED: Back to solid pastel colors */
         background: var(--card-bg-color, #ffffff); 
         border-radius: 15px; 
         overflow: hidden;
@@ -193,10 +180,8 @@
         cursor: pointer;
         opacity: 0;
         transform: translateY(50px) rotate(5deg);
-        transition: opacity 0.6s ease-out, transform 0.6s ease-out;
     }
 
-    /* Shake-in Animation Triggered by JS */
     .photo-item.shake-in {
         opacity: 1;
         transform: translateY(0) rotate(0deg);
@@ -213,7 +198,6 @@
         100% { transform: scale(1) rotate(0deg); } 
     }
 
-    /* ✉️ Envelope Flap (V-Shape) */
     .photo-item::before {
         content: '';
         position: absolute;
@@ -221,7 +205,6 @@
         left: 0;
         width: 100%;
         height: 80px;
-        /* 💡 REVERTED: Flap color matches the body color variable */
         background: var(--card-bg-color, #ffffff); 
         clip-path: polygon(0 0, 100% 0, 50% 100%, 0 0);
         z-index: 1; 
@@ -236,29 +219,12 @@
         transform: scaleY(0.9) translateY(-5px); 
     }
 
-    @keyframes flapOpen {
-        0% { transform: rotateX(0deg); }
-        50% { transform: rotateX(90deg) translateY(-10px); }
-        100% { transform: rotateX(0deg); }
-    }
-
-    @keyframes flapClose {
-        0% { transform: rotateX(0deg); }
-        50% { transform: rotateX(-90deg) translateY(10px); }
-        100% { transform: rotateX(0deg); }
-    }
-
-    .photo-item.animate-flap::before {
-        animation: var(--flap-animation-name) var(--flap-animation-duration) ease-in-out infinite alternate;
-    }
-
-    /* --- Image Toggle Container (The "Letter" part peeking out) --- */
     .image-toggle-container {
         width: 100%;
-        height: 160px;
+        height: 180px;
         position: relative;
         overflow: hidden;
-        margin-top: 5px; /* Half the flap height */
+        margin-top: 5px;
         border-radius: 0; 
         z-index: 0; 
     }
@@ -281,10 +247,8 @@
     .photo-item:hover .original-image:not(.hidden) { transform: scale(1.05); filter: brightness(0.95); }
     .photo-item.toggled:hover .caricature-image { transform: scale(1.05); }
 
-    /* ✉️ Details section (The Envelope Body) */
     .details {
-        padding: 30px 20px; 
-        /* 💡 REVERTED: Back to solid color */
+        padding: 25px 20px; 
         background: var(--card-bg-color, #ffffff);
         flex-grow: 1;
         border-bottom-left-radius: 15px; 
@@ -292,206 +256,229 @@
     }
 
     .name {
-        /* 💡 Use Pacifico font */
         font-family: 'Pacifico', cursive;
-        /* 💡 REVERTED: Dark text for light card */
         color: #667eea; 
-        font-size: 2.2em; /* Larger for script */
+        font-size: 1.8em;
         font-weight: 400;
-        margin-bottom: 10px;
+        margin-bottom: 5px;
         transition: color 0.3s ease;
+        line-height: 1.2;
     }
+    
+    .designation {
+        display: inline-block;
+        background: linear-gradient(135deg, #667eea, #764ba2);
+        color: white;
+        padding: 4px 12px;
+        border-radius: 15px;
+        font-size: 0.75em;
+        font-weight: 600;
+        margin-bottom: 10px;
+        font-family: 'Lato', sans-serif;
+        letter-spacing: 0.5px;
+        text-transform: uppercase;
+    }
+    
     .photo-item:hover .name { 
-        color: #764ba2; /* 💡 REVERTED */
+        color: #764ba2;
     } 
     
     .comment { 
         font-style: italic; 
-        /* 💡 REVERTED: Dark text for light card */
-        color: #666; 
-        font-size: 0.95em; 
-        line-height: 1.6; 
+        color: #555;
+        font-size: 0.9em; 
+        line-height: 1.6;
+        margin-top: 8px;
+        display: -webkit-box;
+        -webkit-line-clamp: 3;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        text-overflow: ellipsis;
     }
     
     .photo-item:hover { 
         transform: translateY(-15px) rotateX(5deg) scale(1.02); 
-        /* 💡 REVERTED: Darker shadow for light card */
         box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3); 
     }
-
-    .photo-item::after { 
-        content: ''; 
-        position: absolute; 
-        top: 25px; 
-        right: 15px; 
-        font-size: 1.5em; 
-        opacity: 0; 
-        transform: scale(0) rotate(-45deg); 
-        transition: all 0.3s ease; 
-        z-index: 2; 
-    }
-    .photo-item:hover::after { opacity: 1; transform: scale(1) rotate(0deg); }
 
     @keyframes fadeInDown { from { opacity: 0; transform: translateY(-30px); } to { opacity: 1; transform: translateY(0); } }
     @keyframes scaleIn { from { opacity: 0; transform: scale(0.9); } to { opacity: 1; transform: scale(1); } }
     
-    /* 📱 MOBILE OPTIMIZATION (Max-width 600px) */
-    @media (max-width: 600px) { 
-        header h1 { font-size: 3em; } /* Adjusted for Pacifico */
+    @media (max-width: 768px) {
+        header h1 { font-size: 3.2em; }
+        .gallery-title { font-size: 2.8em; }
         
-        .focus-card { width: 100%; margin: 0 10px; padding: 15px; }
-        .focus-card img { max-height: 65vh; }
-        .focus-card h1 { font-size: 2.5em; } /* Adjusted for Pacifico */
-        #intro-caricature-container, #main-photo-focus { padding: 10px 0; min-height: 75vh; }
-        .gallery-title { padding-top: 20px; font-size: 2.8em; } /* Adjusted for Pacifico */
+        .photo-gallery {
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+            padding: 20px;
+        }
+        
+        .name { font-size: 1.6em; }
+        .designation { font-size: 0.7em; padding: 3px 10px; }
+        .comment { font-size: 0.85em; -webkit-line-clamp: 4; }
+    }
+    
+    @media (max-width: 600px) { 
+        header h1 { font-size: 2.5em; }
+        header p { font-size: 1em; }
+        
+        .focus-card { width: 95%; margin: 0 10px; padding: 20px; }
+        .focus-card img { max-height: 60vh; }
+        .focus-card h1 { font-size: 2.2em; }
+        #intro-caricature-container, #main-photo-focus { padding: 10px 0; min-height: 70vh; }
+        .gallery-title { padding-top: 20px; font-size: 2.2em; }
 
-        .photo-gallery { display: block; padding: 10px; } 
+        .photo-gallery { display: block; padding: 15px; } 
         .photo-item { 
-            margin: 0 10px 20px 10px; 
+            margin: 0 10px 25px 10px; 
             transform: none !important; 
             animation: scaleIn 0.5s ease-out backwards;
             transition: all 0.3s ease;
-            /* 💡 Disable 3D hover on mobile */
         } 
         .photo-item:hover { 
-            transform: none !important; 
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15); /* 💡 REVERTED */
+            transform: translateY(-5px) !important; 
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.2);
         }
         
         .photo-item::before { height: 60px; } 
-        .image-toggle-container { height: 120px; margin-top: 30px; }
+        .image-toggle-container { height: 140px; margin-top: 30px; }
         
-        .name { font-size: 1.8em; } /* Adjusted for Pacifico */
-        .comment { font-size: 0.85em; }
+        .name { font-size: 1.5em; }
+        .designation { font-size: 0.65em; }
+        .comment { font-size: 0.8em; line-height: 1.5; }
         .details { padding: 20px 15px; }
-        .photo-item::after { top: 15px; right: 10px; font-size: 1.2em; }
-        .photo-item:hover::after, .photo-item:hover::before { transform: none !important; }
-
-        /* 4. Modal Optimization */
-        .modal-content {
-            max-width: 95%; 
-            max-height: 95vh;
-            padding: 20px 15px 15px 15px; /* More top padding for button */
-            word-wrap: break-word; 
-            overflow-wrap: break-word; 
-        }
-        
-        /* 💡 4. MODAL IMAGE (REVERTED) */
-        #modal-image-container img { max-height: 60vh; }
-        
-        .close-button {
-            top: 8px;
-            right: 12px;
-            font-size: 30px;
-            padding: 5px;
-        }
-        
-        .modal-details h3 {
-            font-size: 2em; /* Adjusted for Pacifico */
-            word-wrap: break-word; 
-            overflow-wrap: break-word; 
-        }
-        .modal-details p {
-            font-size: 1em;
-            word-wrap: break-word; 
-            overflow-wrap: break-word; 
-            padding: 0 10px;
-        }
     }
     
-    .scroll-indicator { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%); color: white; font-size: 2em; animation: bounce 2s infinite; opacity: 0.7; z-index: 1000; }
-    @keyframes bounce { 0%, 20%, 50%, 80%, 100% { transform: translateX(-50%) translateY(0); } 40% { transform: translateX(-50%) translateY(-15px); } 60% { transform: translateX(-50%) translateY(-7px); } }
+    .scroll-indicator { 
+        position: fixed; 
+        bottom: 30px; 
+        left: 50%; 
+        transform: translateX(-50%); 
+        color: white; 
+        font-size: 2em; 
+        animation: bounce 2s infinite; 
+        opacity: 0.7; 
+        z-index: 1000; 
+    }
+    
+    @keyframes bounce { 
+        0%, 20%, 50%, 80%, 100% { transform: translateX(-50%) translateY(0); } 
+        40% { transform: translateX(-50%) translateY(-15px); } 
+        60% { transform: translateX(-50%) translateY(-7px); } 
+    }
+    
     body.scrolled .scroll-indicator { color: #667eea; opacity: 0; pointer-events: none; } 
     
-    /* --- MODAL/LIGHTBOX STYLES --- */
     .modal {
         position: fixed;
         z-index: 10000;
         left: 0; top: 0; width: 100%; height: 100%; overflow: auto;
-        background-color: rgba(0, 0, 0, 0.9);
+        background-color: rgba(0, 0, 0, 0.92);
         display: none; justify-content: center; align-items: center;
-        backdrop-filter: blur(5px); opacity: 0; transition: opacity 0.3s ease;
+        backdrop-filter: blur(8px); opacity: 0; transition: opacity 0.3s ease;
     }
     .modal.visible { display: flex; opacity: 1; }
     
     .modal-content {
-        margin: auto; display: block; max-width: 90%; max-height: 90%;
-        background: white; border-radius: 15px; box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
-        padding: 25px 20px 20px 20px; /* More top padding for button */
-        text-align: center; transform: scale(0.8); transition: transform 0.3s ease;
-        position: relative; 
+        margin: auto; 
+        display: block; 
+        max-width: 90%; 
+        max-height: 90vh;
+        background: white; 
+        border-radius: 20px; 
+        box-shadow: 0 15px 60px rgba(0, 0, 0, 0.6);
+        padding: 30px 25px 25px 25px;
+        text-align: center; 
+        transform: scale(0.8); 
+        transition: transform 0.3s ease;
+        position: relative;
+        overflow-y: auto;
     }
     .modal.visible .modal-content { transform: scale(1); }
     
-    /* 💡 4. MODAL IMAGE (REVERTED) */
     #modal-image-container { 
         width: 100%; 
-        max-height: 70vh; 
+        max-height: 60vh; 
         overflow: hidden; 
-        margin-bottom: 15px; 
+        margin-bottom: 20px; 
         position: relative; 
-        border-radius: 10px; 
+        border-radius: 12px; 
     }
     #modal-image-container img { 
         max-width: 100%; 
-        max-height: 70vh; 
+        max-height: 60vh; 
         height: auto; 
         object-fit: contain; 
         cursor: pointer; 
         transition: opacity 0.3s ease; 
-        border: 3px solid #667eea; 
-        border-radius: 10px; 
+        border: 4px solid #667eea; 
+        border-radius: 12px; 
     }
-    /* 💡 (REMOVED 3D FLIPPER STYLES) */
     
     .modal-details h3 { 
-        /* 💡 Use Pacifico font */
         font-family: 'Pacifico', cursive;
         color: #764ba2; 
-        font-size: 2.5em; /* Larger for script */
+        font-size: 2.2em;
         font-weight: 400;
-        margin-bottom: 5px; 
+        margin-bottom: 8px;
+        line-height: 1.2;
     }
+    
+    .modal-details .designation {
+        margin-bottom: 15px;
+        font-size: 0.9em;
+    }
+    
     .modal-details p { 
-        /* 💡 Use Lato font */
         font-family: 'Lato', sans-serif;
-        color: #666; 
+        color: #555; 
         font-style: italic; 
-        font-size: 1.1em; 
-        margin-bottom: 15px; 
+        font-size: 1.05em; 
+        margin-bottom: 15px;
+        line-height: 1.7;
+        text-align: left;
+        padding: 0 10px;
+    }
+    
+    .modal-hint {
+        font-size: 0.85em !important;
+        color: #aaa !important;
+        font-style: normal !important;
+        text-align: center !important;
+        margin-top: 10px;
     }
     
     .close-button {
         position: absolute; 
-        top: 10px; 
-        right: 15px; 
+        top: 12px; 
+        right: 18px; 
         color: #888; 
-        font-size: 35px;
+        font-size: 38px;
         font-weight: bold; 
         transition: 0.3s; 
         cursor: pointer;
         z-index: 10;
         line-height: 1;
-        padding: 0 5px;
+        padding: 0 8px;
     }
-    .close-button:hover, .close-button:focus { color: #000; }
+    .close-button:hover, .close-button:focus { color: #333; }
     
     .modal-open { overflow: hidden; }
-
-    /* 💡 3. MODAL SPARKLE BURST ANIMATION (Kept) */
+    
     .modal-sparkle-burst {
         position: absolute;
         top: 50%;
         left: 50%;
         width: 0;
         height: 0;
-        z-index: 0; /* Behind modal content but above bg */
+        z-index: 0;
     }
 
     .modal-sparkle-burst .sparkle-particle {
         position: absolute;
-        left: -1px; /* Center the particle */
-        top: -1px; /* Center the particle */
+        left: -1px;
+        top: -1px;
         width: 4px;
         height: 4px;
         border-radius: 50%;
@@ -499,7 +486,6 @@
     }
 
     .modal.visible .modal-sparkle-burst .sparkle-particle {
-        /* Trigger animation when modal is visible */
         animation: burst-out 0.8s ease-out forwards;
     }
 
@@ -509,10 +495,266 @@
             opacity: 1;
         }
         100% {
-            /* Use CSS variables set by JS for random direction */
             transform: translate(var(--x), var(--y)) scale(1);
             opacity: 0;
         }
+    }
+    
+    @media (max-width: 600px) {
+        .modal-content {
+            max-width: 95%;
+            max-height: 92vh;
+            padding: 25px 18px 20px 18px;
+            border-radius: 15px;
+        }
+        
+        #modal-image-container { max-height: 50vh; }
+        #modal-image-container img { max-height: 50vh; border-width: 3px; }
+        
+        .close-button {
+            top: 8px;
+            right: 12px;
+            font-size: 32px;
+        }
+        
+        .modal-details h3 {
+            font-size: 1.8em;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+        }
+        
+        .modal-details .designation {
+            font-size: 0.75em;
+        }
+        
+        .modal-details p {
+            font-size: 0.95em;
+            padding: 0 5px;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+        }
+        
+        .modal-hint {
+            font-size: 0.8em !important;
+        }
+
+
+        /* ===== FIX 1: Kids Section - High Contrast Colors ===== */
+.kids-info {
+    background: linear-gradient(135deg, #000000 0%, #ffe69c 100%);
+    padding: 8px 12px;
+    border-radius: 10px;
+    margin: 10px 0 5px 0;
+    text-align: center;
+    box-shadow: 0 2px 6px rgba(255, 193, 7, 0.3);
+    border: 1px solid #ffc107;
+}
+
+.kids-info p {
+    color: #000000 !important;  /* Pure black */
+    font-size: 0.82em !important;
+    font-style: normal !important;
+    margin: 0 !important;
+    font-weight: 600 !important;
+    line-height: 1.4 !important;
+}
+
+.kids-label {
+    font-weight: 700 !important;
+    color: #d32f2f !important;  /* Strong red */
+    margin-right: 3px;
+}
+
+.kids-names {
+    font-weight: 700 !important;
+    color: #000000 !important;  /* Strong blue */
+}
+
+/* ===== FIX 2: Clean Up Gallery Layout ===== */
+
+/* Reduce card padding for cleaner look */
+.details {
+    padding: 20px 16px;
+    background: var(--card-bg-color, #ffffff);
+    flex-grow: 1;
+    border-bottom-left-radius: 15px;
+    border-bottom-right-radius: 15px;
+}
+
+/* Better name sizing */
+.name {
+    font-family: 'Pacifico', cursive;
+    color: #667eea;
+    font-size: 1.6em;  /* Reduced from 1.8em */
+    font-weight: 400;
+    margin-bottom: 8px;
+    transition: color 0.3s ease;
+    line-height: 1.3;
+}
+
+/* Smaller designation badge */
+.designation {
+    display: inline-block;
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    color: white;
+    padding: 3px 10px;  /* Reduced padding */
+    border-radius: 12px;  /* Slightly smaller radius */
+    font-size: 0.7em;  /* Reduced from 0.75em */
+    font-weight: 600;
+    margin-bottom: 8px;
+    font-family: 'Lato', sans-serif;
+    letter-spacing: 0.3px;
+    text-transform: uppercase;
+}
+
+/* Adjust comment text */
+.comment {
+    font-style: italic;
+    color: #555 !important;  /* Ensure dark text */
+    font-size: 0.85em;  /* Slightly smaller */
+    line-height: 1.5;
+    margin-top: 8px;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* Reduce image container height */
+.image-toggle-container {
+    width: 100%;
+    height: 160px;  /* Reduced from 180px */
+    position: relative;
+    overflow: hidden;
+    margin-top: 5px;
+    border-radius: 0;
+    z-index: 0;
+}
+
+/* Tighter spacing in photo items */
+.photo-item {
+    background: var(--card-bg-color, #ffffff);
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.12);  /* Softer shadow */
+    display: flex;
+    flex-direction: column;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    position: relative;
+    transform-style: preserve-3d;
+    cursor: pointer;
+    opacity: 0;
+    transform: translateY(50px) rotate(5deg);
+}
+
+/* Reduce envelope flap size */
+.photo-item::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 60px;  /* Reduced from 80px */
+    background: var(--card-bg-color, #ffffff);
+    clip-path: polygon(0 0, 100% 0, 50% 100%, 0 0);
+    z-index: 1;
+    border-top-left-radius: 15px;
+    border-top-right-radius: 15px;
+    transform-origin: top;
+    transition: transform 0.4s ease;
+    transform: scaleY(1);
+}
+
+/* Better grid spacing */
+.photo-gallery {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));  /* Slightly smaller minimum */
+    gap: 25px;  /* Reduced from 30px */
+    padding: 20px 40px 80px;
+    max-width: 1400px;
+    margin: 0 auto;
+    perspective: 1200px;
+}
+
+/* ===== MOBILE ADJUSTMENTS ===== */
+@media (max-width: 768px) {
+    .name { font-size: 1.5em; }
+    .designation { font-size: 0.65em; padding: 3px 8px; }
+    .comment { font-size: 0.82em; }
+    .kids-info { padding: 7px 10px; margin: 8px 0 4px 0; }
+    .kids-info p { font-size: 0.78em !important; }
+    .details { padding: 18px 14px; }
+    .image-toggle-container { height: 140px; }
+}
+
+@media (max-width: 600px) {
+    .photo-gallery { 
+        display: block; 
+        padding: 15px; 
+    }
+    
+    .photo-item { 
+        margin: 0 10px 20px 10px;  /* Reduced from 25px */
+    }
+    
+    .photo-item::before { height: 50px; }
+    .image-toggle-container { height: 130px; margin-top: 25px; }
+    
+    .name { font-size: 1.4em; }
+    .designation { font-size: 0.6em; padding: 2px 8px; }
+    .comment { font-size: 0.78em; line-height: 1.4; }
+    .details { padding: 16px 12px; }
+    .kids-info { padding: 6px 10px; margin: 6px 0 3px 0; }
+    .kids-info p { font-size: 0.75em !important; }
+}
+
+/* Sparkle burst container in modal */
+.modal-sparkle-burst {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    z-index: 2;
+    pointer-events: none;   /* Ignore mouse events */
+}
+
+/* Each sparkle particle */
+.sparkle-particle {
+    position: absolute;
+    left: -1px;
+    top: -1px;
+    width: 7px;                 /* Slightly bigger for visibility */
+    height: 7px;
+    border-radius: 50%;
+    background: #fff;
+    opacity: 0;
+    box-shadow: 0 0 8px rgba(255,255,255,0.5);   /* Soft glow for each particle */
+    pointer-events: none;
+}
+
+/* When modal is visible, trigger burst animation */
+.modal.visible .modal-sparkle-burst .sparkle-particle {
+    animation: burst-out 0.8s cubic-bezier(0.68, -0.55, 0.27, 1.55) forwards;  /* Springier burst */
+}
+
+@keyframes burst-out {
+    0% {
+        transform: translate(0, 0) scale(0.1);
+        opacity: 1;
+    }
+    90% {
+        opacity: 1;
+    }
+    100% {
+        transform: translate(var(--x), var(--y)) scale(1.5);
+        opacity: 0;
+    }
+}
+
+
+        
     }
 
 </style>
@@ -527,14 +769,15 @@
     </div>
 
     <header>
-        <h1> Wall of Love </h1>
-        <p> Best wishes and fathoms beneath your keel from Team HQST!</p>
+        <h1>⚓ Wall of Love ⚓</h1>
+        <p>Best wishes and fathoms beneath your keel from Team HQST!</p>
     </header>
 
     <div id="intro-caricature-container">
         <div class="focus-card">
             <img src="./caricature.jpg" alt="Team Caricature Drawing"> 
             <h1>Team HQST 2025</h1>
+            <span>Tap to toggle views!</span>
         </div>
     </div>
     
@@ -542,10 +785,11 @@
         <div class="focus-card">
             <img src="./main.jpg" alt="Main Team Photo"> 
             <h1>Team HQST 2025</h1>
+            <span>Tap to toggle views!</span>
         </div>
     </div>
 
-    <h2 class="gallery-title"> Best Wishes from Team </h2>
+    <h2 class="gallery-title">🎖️ Heartfelt Wishes 🎖️</h2>
 
     <div class="photo-gallery" id="main-gallery">
     </div>
@@ -555,12 +799,12 @@
             <div class="modal-sparkle-burst"></div>
             
             <span class="close-button">&times;</span>
-            <div id="modal-image-container">
-                </div>
+            <div id="modal-image-container"></div>
             <div class="modal-details">
                 <h3 id="modal-name"></h3>
+                <div id="modal-designation-container"></div>
                 <p id="modal-comment"></p>
-                <p style="font-size: 0.9em; color: #aaa;">Click the photo to switch!</p>
+                <p class="modal-hint">Tap the photo to switch!</p>
             </div>
         </div>
     </div>
@@ -568,53 +812,50 @@
     <div class="scroll-indicator">↓</div>
 
 <script>
-// Main app init on DOM load
 document.addEventListener('DOMContentLoaded', () => {
 
-    // Helper to check for empty/placeholder CSV fields
     const isEmpty = (str) => !str || str.trim() === '-' || str.trim() === '';
 
-    // --- Config ---
-    const csvDataString = `Ser,Name,Wife,Kids
-1,Surg Cdr Ashirvad M ,Dr Kalyani Ashok,Dhruv - Janki
-2,Cdr Aditya Kumar Pandey ,Jyotsna Pandey,Adika- Suryansh
-3,Cdr Gaurav Gupta ,Mrs. Priyanka Gupta,Shanvi 
-4,Cdr AK Mishra ,Mrs. Anjali Mishra,Amaira
-5,Lt Cdr Navjot Singh ,-,
-6,Cdr Hemant Kumar Yadav ,Dr Jyoti Yadav,Hreyansh - Shivansh
-7,Cdr Kiran Chavan ,Mrs. Trupti Chavan,Avyaan
-8,Cdr KS Reddy ,Mrs K Bharthi,Girija-  Lohit
-9,Lt Cdr Ditiesh,Mrs Lakshmi ,
-10,Cdr Kapil Sharma ,Shivani Sharma,Kritansh - Advika 
-11,Cdr U Sharan Kumar ,Lt Cdr Pallavi Khandelwal,Poorvik- Dharsh
-12,Cdr Savtanter Saini ,Mrs Aditi Sharma,Eunoia 
-13,Cdr Abinash Kumar ,Mrs Sushma Singh,Arnika - Avyaan
-14,Cdr Manjeet Singh Sangha ,Mrs Sarabjeet Kaur,Raunakpreet 
-15,Capt Mukesh Tayal ,Mrs Isha Tayal,Prisha-Ivvan
-16,Cdr Amandeep Singh ,-,
-17,Cdr Sumit ,Mrs Priyanka,Krisha
-18,Lt Cdr Ashwin Jayaprakash ,Mrs. Ayana Krishnan,
-19,Capt Ashwin Padiyar ,Mrs Swetha Padiyar,
-20,Lt Cdr N Ankit,Mrs. Sarvani MP,
-21,Cdr Rajesh R ,Mrs Lakshmi Unny,Yashasvi
-22,Cmde M Abraham Samuel ,Nishy Samuel,Yohan-Rianne-Noah
-24,Lt Cdr Rohan Nesarkar ,Mrs. Shreya Mitkar,
-25,Cdr Vijendra Singh ,Mrs. Priyanka Singh,Ritvik
-26,Cdr P Ashok Varma ,Divya Aarti,Hridaan
-27,Cdr Rahul Kumar Singh ,Mrs Radha Singh,Anika 
-28,Lt Cdr Amrit Pal Singh ,Mrs Navneet Kaur,Harneet- Luvneet 
-29,Lt Cdr Abrar,Dr Shabnam,
-30,Cdr Upendar Singh,Mrs Heeba,G Pratap Singh
-31,Cdr Shivshankar B Patil ,Mrs Savitri Patil,Shivansh- Vedansh
-32,Lt Cdr Govind Kumar Jha ,Mrs Kalpana Jha,Yatika Jha`;
+    // CSV data with all columns included
+    const csvDataString = `Ser,Name,Wife,Designation,Kids,Message
+1,Surg Cdr Ashirvad M,Dr Kalyani Ashok,SO (MED),"Dhruv, Jaanki","May success sail alongside you, good health steer your course, and luck stay anchored with you and Ma'am forever, Sir."
+2,Cdr Aditya Kumar Pandey,Jyotsna Pandey,SO (ND),"Adika, Suryansh","Wishing you fair winds and smooth seas in all your future endeavours, Sir."
+3,Cdr Gaurav Gupta,Mrs. Priyanka Gupta,SO (NBCD),Shanvi,"May your journey ahead be filled with continued success and meaningful milestones, Sir."
+4,Cdr Abhishek Kant Mishra,Mrs. Anjali Mishra,SO (Gunnery),Amaira,"Wishing Sir and Mam new horizons, continued success and countless happy memories in every chapter of togetherness."
+5,Lt Cdr Navjot Singh,-,FLAG LT,,Honoured to have served under your Flag as your Flag Lt. Ma'am and Sir — wishing you calm seas and bright horizons.
+6,Cdr Hemant Kumar Yadav,Dr Jyoti Yadav,SO (AVN),"Hreyansh, Shivansh","May you both shine bright and light up every life you touch, as wonderful as your smile."
+7,Cdr Kiran Chavan,Mrs. Trupti Chavan,SO(E),Avyaan,Wish you and ma'am infinite laurels to come
+8,Cdr KS Reddy,Mrs K Bharthi,SO SS,"Girija, Lohit","Wishing you and Ma'am enduring happiness, good health, and boundless success, Sir."
+9,Lt Cdr Dithiesh,Mrs Lakshmi,ex SO to FOST,,"Sir, It has indeed been a singular honour and privilege to serve under your command as your Staff Officer. I wish to express my heartfelt gratitude for the invaluable lessons and guidance received. Lakshmi joins me in conveying our warmest wishes to you and Ma'am for continued success and happiness in all your future endeavours."
+10,Cdr Kapil Sharma,Shivani Sharma,Cdr SWCC,"Kritansh, Advika",Wishing you and ma'am all the best in your new role and future endeavors!
+11,Cdr U Sharan Kumar,Lt Cdr Pallavi Khandelwal,,"Poorvik, Dharsh","May your next voyage bring even greater achievements and joy, Sir."
+12,Cdr Savtanter Saini,Mrs Aditi Sharma,SO(E),Eunoia,"Wishing you calm seas and bright horizons in every new chapter, Sir."
+13,Cdr Abinash Kumar,Mrs Sushma Singh,SO(ASW),"Arnika, Avyaan","Wishing you fair winds and smooth seas in all your future endeavours, Sir."
+14,Cdr Manjeet Singh Sangha,Mrs Sarabjeet Kaur,SO (C & EW) II,Raunakpreet,"Au revoir, Sir and Ma'am — your guidance, kindness, and spirit will forever remain our true north."
+15,Capt Mukesh Tayal,Mrs Isha Tayal,Capt SSD,"Prisha, Ivaan",Sir wish u and ma'am lovely time in Delhi again
+16,Cdr Amandeep Singh,-,SO (ND) III,,"Best wishes sir, it was an honour to sail under your command"
+17,Cdr Sumit,Mrs Priyanka,SO (ASW) II,Krisha,"May your journey ahead be filled with continued success and meaningful milestones, Sir."
+18,Lt Cdr Ashwin Jayaprakash,Mrs. Ayana Krishnan,SO (IT),,"Sir, your zeal for learning and unwavering commitment to fitness are truly inspiring. My wife and I deeply value the warmth and life lessons we've received from Devaki Ma'am during our interactions. We extend our sincere best wishes to you both for continued success and happiness."
+19,Capt Ashwin Padiyar,Mrs Swetha Padiyar,,,"May your next voyage bring even greater achievements and joy, Sir."
+20,Lt Cdr N Ankit,Mrs. Sarvani MP,,,"Wishing you calm seas and bright horizons in every new chapter, Sir."
+21,Cdr Rajesh R,Mrs Lakshmi Unny,SO(HULL),Yashasvi,"Sir, Thank you for steering the team through challenges with clarity and confidence. Best of luck ahead to you and mam."
+22,Cmde M Abraham Samuel,Nishy Samuel, CSO to FOST ,"Yohan,Rianne,Noah","Dear Sir & Ma'am, we'll always cherish your inspiring leadership and warmth. Wishing you both the very best ahead"
+24,Lt Cdr Rohan Nesarkar,Mrs. Shreya Mitkar,SO (HULL) II,,"Grateful for your mentorship sir, wishing you continued success ahead...!!"
+25,Cdr Vijendra Singh,Mrs. Priyanka Singh,SO(L),Ritvik,Sir it's been an absolute privilege working under your guidance. Your mentorship and encouragement have left a lasting impact on all of us. Wish u and mam all the very best.
+26,Cdr P Ashok Varma,Divya Aarati,SO (C&EW),Hridaan,"Fair winds, following seas and fathoms beneath your keel"
+27,Cdr Rahul Kumar Singh,Mrs Radha Singh,,Anika,"May your journey ahead be filled with continued success and meaningful milestones, Sir."
+28,Lt Cdr Amrit Pal Singh,Mrs Navneet Kaur,SO(SS)II,"Harneet, Luvneet",All the best for your future endeavours sir. Proud to serve under you for fourth time in service.
+29,Lt Cdr Abrar,Dr Shabnam,,,"Wishing you and Ma'am enduring happiness, good health, and boundless success, Sir."
+30,Cdr Upendar Singh,Mrs Heeba,,Garvit Pratap Singh,"Thank you Sir for your guidance and support. Wishing you and ma'am tons of success, happiness and good health"
+31,Cdr Shivshankar B Patil,Mrs Savitri Patil,,"Shivansh, Vedansh","May your next voyage bring even greater achievements and joy, Sir."
+32,Lt Cdr Govind Kumar Jha,Mrs Kalpana Jha,,Yatika Jha,Wishing you all the very best for your future endeavour`;
 
-    // 💡 REVERTED: Original palette for solid card backgrounds
     const pastelPalettes = [
-        { bg: '#fddde6', flapLight: '#fcd3e5', flapDark: '#f7a8c3' }, // Pink
-        { bg: '#e0f8e0', flapLight: '#c3fcc3', flapDark: '#99e699' }, // Green
-        { bg: '#fff9c4', flapLight: '#feeaa2', flapDark: '#fcdc70' }, // Yellow
-        { bg: '#e6e0f8', flapLight: '#dacaf0', flapDark: '#bfa7e8' }, // Purple
-        { bg: '#dcf0ff', flapLight: '#c0e0ff', flapDark: '#96c4ff' }  // Blue
+        { bg: '#fddde6' },
+        { bg: '#e0f8e0' },
+        { bg: '#fff9c4' },
+        { bg: '#e6e0f8' },
+        { bg: '#dcf0ff' }
     ];
     
     const originalPath = 'original images/'; 
@@ -623,66 +864,71 @@ document.addEventListener('DOMContentLoaded', () => {
     const focusData = {
         caricature: {
             name: "Team HQST 2025 Caricature",
+            designation: "",
             comment: "Click to see the real team photo!",
+            message: "",
             originalFile: "caricature.jpg", 
-            caricatureFile: "main.jpg" // Toggles to main photo
+            caricatureFile: "main.jpg"
         },
         main: {
             name: "Team HQST 2025",
+            designation: "",
             comment: "Click on photo to toggle the team caricature!",
+            message: "",
             originalFile: "main.jpg", 
-            caricatureFile: "caricature.jpg" // Toggles to caricature
+            caricatureFile: "caricature.jpg"
         }
     };
 
-    // --- DOM Elements ---
     const modal = document.getElementById("image-modal");
     const modalImageContainer = document.getElementById("modal-image-container");
     const modalName = document.getElementById("modal-name");
+    const modalDesignationContainer = document.getElementById("modal-designation-container");
     const modalComment = document.getElementById("modal-comment");
     const closeBtn = document.querySelector(".modal-content .close-button");
     const mainGallery = document.getElementById('main-gallery');
     const caricatureFocus = document.getElementById('intro-caricature-container');
     const mainPhotoFocus = document.getElementById('main-photo-focus');
-    // 💡 3. Get sparkle burst container
     const modalBurstContainer = document.querySelector('.modal-sparkle-burst');
 
     let currentModalItem = null;
 
-    /**
-     * Parses the CSV string and converts it into structured gallery data.
-     */
     function parseCSV(csv) {
         const lines = csv.trim().split('\n');
         const headers = lines[0].split(',').map(h => h.trim());
         const result = [];
 
         for (let i = 1; i < lines.length; i++) {
-            const values = lines[i].split(',').map(v => v.trim());
+            const line = lines[i];
+            const values = [];
+            let current = '';
+            let inQuotes = false;
+
+            for (let j = 0; j < line.length; j++) {
+                const char = line[j];
+                if (char === '"') {
+                    inQuotes = !inQuotes;
+                } else if (char === ',' && !inQuotes) {
+                    values.push(current.trim());
+                    current = '';
+                } else {
+                    current += char;
+                }
+            }
+            values.push(current.trim());
+
             const item = {};
             for (let j = 0; j < headers.length; j++) {
-                item[headers[j]] = values[j];
+                item[headers[j]] = values[j] || '';
             }
             
-            let cardComment;
-            if (!isEmpty(item.Wife)) {
-                cardComment = `With love from ${item.Wife}`;
-                if (!isEmpty(item.Kids)) {
-                    const kidsFormatted = item.Kids.replace(/-/g, ' & ');
-                    cardComment += ` and the kids: ${kidsFormatted}.`;
-                } else {
-                    cardComment += `.`;
-                }
-            } else {
-                cardComment = "Best wishes from the team!"; // Fallback
-            }
-
             result.push({
                 id: parseInt(item.Ser, 10),
                 name: item.Name,
                 wife: item.Wife,
+                designation: item.Designation,
                 kids: item.Kids,
-                comment: cardComment, 
+                message: item.Message || "Best wishes for your future endeavours, Sir.",
                 originalFile: `${item.Ser}.JPG`,
                 caricatureFile: `${item.Ser}.png`,
                 palette: pastelPalettes[(parseInt(item.Ser, 10) - 1) % pastelPalettes.length]
@@ -691,59 +937,75 @@ document.addEventListener('DOMContentLoaded', () => {
         return result;
     }
 
-    /**
-     * 💡 3. Triggers the sparkle burst animation (Kept)
-     */
     function playSparkleBurst() {
-        modalBurstContainer.innerHTML = ''; // Clear old sparkles
-        const colors = ['#f7a8c3', '#99e699', '#fcdc70', '#bfa7e8', '#96c4ff'];
-        
-        for (let i = 0; i < 20; i++) {
-            const sparkle = document.createElement('span');
-            sparkle.classList.add('sparkle-particle');
-            
-            const x = (Math.random() - 0.5) * 400; // Random horizontal distance (px)
-            const y = (Math.random() - 0.5) * 400; // Random vertical distance (px)
-            sparkle.style.setProperty('--x', `${x}px`);
-            sparkle.style.setProperty('--y', `${y}px`);
-            sparkle.style.background = colors[i % colors.length];
-            
-            modalBurstContainer.appendChild(sparkle);
-        }
+    const modalBurstContainer = document.querySelector('.modal-sparkle-burst');
+    if (!modalBurstContainer) return;
+    modalBurstContainer.innerHTML = '';
+    const colors = ['#f7a8c3', '#99e699', '#fcdc70', '#bfa7e8', '#96c4ff'];
+    for (let i = 0; i < 20; i++) {
+        const sparkle = document.createElement('span');
+        sparkle.classList.add('sparkle-particle');
+        const x = (Math.random() - 0.5) * 200; // slightly less distance
+        const y = (Math.random() - 0.5) * 200;
+        sparkle.style.setProperty('--x', `${x}px`);
+        sparkle.style.setProperty('--y', `${y}px`);
+        sparkle.style.background = colors[i % colors.length];
+        modalBurstContainer.appendChild(sparkle);
     }
+}
 
-    /**
-     * Opens the modal with data from a specific item.
-     */
-    function openModal(item, isFocusImage = false) {
-        currentModalItem = item;
-        
-        const originalPrefix = isFocusImage ? './' : originalPath;
-        const caricaturePrefix = isFocusImage ? './' : caricaturePath;
+function openModal(item, isFocusImage = false) {
+    currentModalItem = item;
+    
+    const originalPrefix = isFocusImage ? './' : originalPath;
+    const caricaturePrefix = isFocusImage ? './' : caricaturePath;
 
-        // 1. Populate details
-        modalName.textContent = item.name;
-        modalComment.textContent = item.comment;
-        
-        // 💡 4. REVERTED: Back to single image tag
-        modalImageContainer.innerHTML = `
-            <img id="modal-image" 
-                 src="${originalPrefix}${item.originalFile}" 
-                 data-original="${originalPrefix}${item.originalFile}" 
-                 data-caricature="${caricaturePrefix}${item.caricatureFile}" 
-                 alt="${item.name}">
+    // Build modal name with wife
+    let modalNameDisplay = item.name;
+    if (item.wife && !isEmpty(item.wife)) {
+        const wifeName = item.wife.replace(/^(Mrs\.|Dr\.|Lt Cdr)\s*/, '');
+        modalNameDisplay += ` & ${wifeName}`;
+    }
+    
+    // Format kids for modal - expanded version with better styling
+    let kidsModalHTML = '';
+    if (item.kids && !isEmpty(item.kids)) {
+        const kidsFormatted = item.kids.replace(/,/g, ' &');
+        kidsModalHTML = `
+            <div class="modal-kids-info">
+                <p>
+                    <span class="modal-kids-label">💝 With best wishes from, </span><br>
+                    <span class="modal-kids-names">${kidsFormatted}</span>
+                </p>
+            </div>
         `;
-
-        // 💡 4. REVERTED: Add toggle listener directly to the image
-        document.getElementById('modal-image').addEventListener('click', toggleModalImage);
-        
-        // 4. Show modal
-        modal.classList.add('visible');
-        document.body.classList.add('modal-open');
-
-        // 💡 3. Play the sparkle burst!
-        playSparkleBurst();
     }
+
+    modalName.textContent = modalNameDisplay;
+    
+    if (item.designation && !isEmpty(item.designation)) {
+        modalDesignationContainer.innerHTML = `<span class="designation">${item.designation}</span>${kidsModalHTML}`;
+    } else {
+        modalDesignationContainer.innerHTML = kidsModalHTML;
+    }
+    
+    modalComment.textContent = item.message;
+    
+    modalImageContainer.innerHTML = `
+        <img id="modal-image" 
+             src="${originalPrefix}${item.originalFile}" 
+             data-original="${originalPrefix}${item.originalFile}" 
+             data-caricature="${caricaturePrefix}${item.caricatureFile}" 
+             alt="${item.name}">
+    `;
+
+    document.getElementById('modal-image').addEventListener('click', toggleModalImage);
+    
+    modal.classList.add('visible');
+    document.body.classList.add('modal-open');
+
+    playSparkleBurst();
+}
 
     function closeModal() {
         modal.classList.remove('visible');
@@ -751,9 +1013,6 @@ document.addEventListener('DOMContentLoaded', () => {
         currentModalItem = null;
     }
 
-    /**
-     * 💡 4. REVERTED: Back to simple src swap
-     */
     function toggleModalImage() {
         const imgElement = document.getElementById('modal-image');
         if (!imgElement) return;
@@ -762,7 +1021,6 @@ document.addEventListener('DOMContentLoaded', () => {
         const originalSrc = imgElement.getAttribute('data-original');
         const caricatureSrc = imgElement.getAttribute('data-caricature');
 
-        // This logic now works for the main photos too
         if (currentSrc === originalSrc) {
             imgElement.setAttribute('src', caricatureSrc);
         } else {
@@ -770,14 +1028,11 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    /**
-     * Starts the random flap animation on a given gallery item.
-     */
     function startRandomFlapAnimation(photoItemElement) {
         const applyRandomAnimation = () => {
             const isFlapOpen = Math.random() < 0.5;
             const animationName = isFlapOpen ? 'flapOpen' : 'flapClose';
-            const duration = (Math.random() * 3) + 2; // 2-5 seconds
+            const duration = (Math.random() * 3) + 2;
 
             photoItemElement.style.setProperty('--flap-animation-name', animationName);
             photoItemElement.style.setProperty('--flap-animation-duration', `${duration}s`);
@@ -791,16 +1046,11 @@ document.addEventListener('DOMContentLoaded', () => {
         setTimeout(applyRandomAnimation, (Math.random() * 1000) + 500); 
     }
 
-    /**
-     * Toggles the main header image.
-     */
     function toggleFocusView() {
         caricatureFocus.classList.toggle('hidden');
         mainPhotoFocus.classList.toggle('hidden');
         window.scrollTo({ top: 0, behavior: 'smooth' });
     }
-
-    // --- Initialization ---
 
     const galleryData = parseCSV(csvDataString);
 
@@ -820,40 +1070,62 @@ document.addEventListener('DOMContentLoaded', () => {
         threshold: 0.1
     });
 
-    // Populate Gallery
-    galleryData.forEach((item) => {
-        const photoItem = document.createElement('div');
-        photoItem.className = 'photo-item';
+galleryData.forEach((item) => {
+    const photoItem = document.createElement('div');
+    photoItem.className = 'photo-item';
 
-        // 💡 REVERTED: Set CSS variable for solid card background
-        photoItem.style.setProperty('--card-bg-color', item.palette.bg);
-        photoItem.style.setProperty('--animation-delay', `${(item.id % 6) * 0.1 + 0.1}s`);
+    photoItem.style.setProperty('--card-bg-color', item.palette.bg);
+    photoItem.style.setProperty('--animation-delay', `${(item.id % 6) * 0.1 + 0.1}s`);
 
-        photoItem.innerHTML = `
-            <div class="image-toggle-container">
-                <img src="${caricaturePath}${item.caricatureFile}" alt="Caricature of ${item.name}" class="caricature-image">
-                <img src="${originalPath}${item.originalFile}" alt="Photo of ${item.name}" class="original-image">
-            </div>
-            <div class="details">
-                <h3 class="name">${item.name}</h3>
-                <p class="comment">${item.comment}</p>
-            </div>
-        `;
-        
-        photoItem.addEventListener('click', () => {
-            openModal(item, false);
-        });
+    const designationHTML = item.designation && !isEmpty(item.designation) 
+        ? `<span class="designation">${item.designation}</span>` 
+        : '';
 
-        mainGallery.appendChild(photoItem);
-        observer.observe(photoItem);
+    // Build card name with wife
+    let cardNameDisplay = item.name;
+    if (item.wife && !isEmpty(item.wife)) {
+        const firstName = item.wife;
+        cardNameDisplay += ` & ${firstName}`;
+    }
+
+    // Format kids for card - compact version
+    // let kidsCardHTML = '';❤️
+    // if (item.kids && !isEmpty(item.kids)) {
+    //     const kidsFormatted = item.kids.replace(/,/g, ' &');
+    //     kidsCardHTML = `
+    //         <div class="kids-info">
+    //             <p><span class="kids-label">❤️ With love from:</span> ${kidsFormatted}</p>
+    //         </div>
+    //     `;
+    // }
+
+    let kidsCardHTML = '❤️';
+
+    photoItem.innerHTML = `
+        <div class="image-toggle-container">
+            <img src="${caricaturePath}${item.caricatureFile}" alt="Caricature of ${item.name}" class="caricature-image">
+            <img src="${originalPath}${item.originalFile}" alt="Photo of ${item.name}" class="original-image">
+        </div>
+        <div class="details">
+            <h3 class="name">${cardNameDisplay}</h3>
+            ${designationHTML}
+            ${kidsCardHTML}
+            <p class="comment">${item.message}</p>
+        </div>
+    `;
+    
+    photoItem.addEventListener('click', () => {
+        openModal(item, false);
     });
 
+    mainGallery.appendChild(photoItem);
+    observer.observe(photoItem);
+});
 
-    // Attach Main Event Listeners
+
     closeBtn.addEventListener('click', closeModal);
     
     window.addEventListener('click', (event) => {
-        // Close if user clicks the dark background
         if (event.target === modal) {
             closeModal();
         }
